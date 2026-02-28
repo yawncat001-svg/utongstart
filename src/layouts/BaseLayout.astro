@@ -2,7 +2,6 @@
 import { ViewTransitions } from 'astro:transitions';
 import Header from '../components/common/Header.astro';
 import Footer from '../components/common/Footer.astro';
-import KakaoChat from '../components/common/KakaoChat.astro';
 import SEOHead from '../components/common/SEOHead.astro';
 
 interface Props {
@@ -38,7 +37,6 @@ const { title, description, keywords, ogImage, canonicalURL } = Astro.props;
 			<slot />
 		</main>
 		<Footer />
-    <KakaoChat client:load />
 	</body>
 </html>
 <style is:global>
