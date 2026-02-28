@@ -1,0 +1,18 @@
+﻿
+> utongstart-web@0.0.1 build
+> astro build
+
+08:48:37 [WARN] The currently selected adapter `@astrojs/cloudflare` is not compatible with the image service "Sharp".
+08:48:38 [types] Generated 728ms
+08:48:38 [build] output: "hybrid"
+08:48:38 [build] directory: D:\workspace\utonstart\dist\
+08:48:38 [build] adapter: @astrojs/cloudflare
+08:48:38 [build] Collecting build info...
+08:48:38 [build] ??Completed in 890ms.
+08:48:38 [build] Building hybrid entrypoints...
+08:48:44 [vite] [32m??built in 6.07s[39m
+08:48:44 [build] ??Completed in 6.11s.
+
+ building client (vite) 
+08:48:44 [vite] [32m??[39m 0 modules transformed.
+08:48:44 [vite] transforming...

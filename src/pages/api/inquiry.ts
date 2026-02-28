@@ -1,16 +1,16 @@
 import type { APIRoute } from 'astro';
-import { getDB, insertInquiry, NewInquiry } from '../../lib/db/client';
+import { getDB, insertInquiry, type NewInquiry } from '../../lib/db/client';
 import { validateInquiry, sanitizeInput } from '../../lib/utils/validateForm';
 import { sendInquiryNotification } from '../../lib/email/sendNotification';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const formData = await request.json();
+    const formData = (await request.json()) as Record<string, string>;
 
     // 1. 입력값 새니타이즈
-    const sanitizedData = Object.fromEntries(
+    const sanitizedData: Record<string, string> = Object.fromEntries(
       Object.entries(formData).map(([key, value]) => [
-        key, typeof value === 'string' ? sanitizeInput(value) : value
+        key, typeof value === 'string' ? sanitizeInput(value) : String(value)
       ])
     );
 
@@ -27,11 +27,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // 3. DB에 데이터 저장
     const newInquiry: NewInquiry = {
-      name: sanitizedData.name,
-      company: sanitizedData.company,
-      phone: sanitizedData.phone,
+      name: sanitizedData.name || '',
+      company: sanitizedData.company || '',
+      phone: sanitizedData.phone || '',
       email: sanitizedData.email || null,
-      serviceType: sanitizedData.serviceType,
+      serviceType: sanitizedData.serviceType || '',
       productCategory: sanitizedData.productCategory || null,
       budgetRange: sanitizedData.budgetRange || null,
       message: sanitizedData.message || null,
@@ -45,8 +45,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // 5. 성공 응답 반환
     return new Response(
-      JSON.stringify({ 
-        success: true, 
+      JSON.stringify({
+        success: true,
         id: result.id,
         message: '상담 신청이 성공적으로 접수되었습니다.'
       }),
@@ -68,8 +68,8 @@ declare namespace App {
     runtime: {
       env: {
         D1_DATABASE: D1Database;
-        NOTIFICATION_EMAIL: string; 
-        RESEND_API_KEY: string; 
+        NOTIFICATION_EMAIL: string;
+        RESEND_API_KEY: string;
       };
     };
   }

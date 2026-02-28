@@ -13,20 +13,25 @@ export default defineConfig({
   adapter: cloudflare({
     platformProxy: { enabled: true }
   }),
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/noop'
+    }
+  },
   integrations: [
-    tailwind(), 
-    react(), 
+    tailwind(),
+    react(),
     sitemap({
-        filter: (page) => !page.includes('/api/')
-    }), 
+      filter: (page) => !page.includes('/api/')
+    }),
     mdx()
-    ],
+  ],
   vite: {
     plugins: [
-        nodePolyfills(),
+      nodePolyfills(),
     ],
-    ssr: { 
-        external: ['node:buffer'] 
+    ssr: {
+      external: ['node:buffer']
     }
   }
 });
