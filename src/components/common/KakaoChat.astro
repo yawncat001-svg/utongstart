@@ -1,0 +1,44 @@
+---
+const KAKAO_CHANNEL_KEY = import.meta.env.KAKAO_CHANNEL_KEY;
+
+if (KAKAO_CHANNEL_KEY) {
+  // 카카오톡 채널 SDK 로드 스크립트
+  // window 객체에 Kakao가 로드된 이후에 초기화 및 채널 추가 버튼을 렌더링합니다.
+  const script = `
+    (function() {
+      if (window.Kakao && window.Kakao.isInitialized()) {
+        return; 
+      }
+      const kakaoScript = document.createElement('script');
+      kakaoScript.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js";
+      kakaoScript.integrity = "sha384-MEOKk8cu9cgeOjoVLI3yJIdJzNYHDwQeGjNGAkkJkzvYnKvaG2BfUjsbuEvU8m+R";
+      kakaoScript.crossOrigin = "anonymous";
+      kakaoScript.onload = function() {
+        window.Kakao.init('${KAKAO_CHANNEL_KEY}');
+        console.log("Kakao SDK initialized: ", window.Kakao.isInitialized());
+
+        // 채널 채팅 버튼 렌더링
+        if (document.getElementById('kakao-talk-channel-chat-button')) {
+          window.Kakao.Channel.createChatButton({
+            container: '#kakao-talk-channel-chat-button',
+            channelPublicId: '_xjxnxcG', // 카카오톡 채널 홈 URL에서 확인 가능한 채널 고유 ID입니다.
+            title: '카카오톡 채널 채팅',
+            size: 'small',
+            color: 'yellow',
+            shape: 'circle',
+            'support-multiple-densities': true,
+          });
+        }
+      };
+      document.head.appendChild(kakaoScript);
+    })();
+  `;
+  Astro.addScript(script);
+}
+---
+
+{KAKAO_CHANNEL_KEY && (
+  <div id="kakao-talk-channel-chat-button" class="fixed bottom-6 right-6 z-40">
+    <!-- 카카오톡 채널 채팅 버튼이 여기에 렌더링됩니다 -->
+  </div>
+)}

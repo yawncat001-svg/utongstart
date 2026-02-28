@@ -1,0 +1,111 @@
+---
+import { seoData } from '../../data/seo';
+
+interface Props {
+  pageTitle: string;
+  pageDescription: string;
+  pageKeywords?: string;
+  ogImage?: string;
+  canonicalURL?: URL | string;
+}
+
+const { pageTitle, pageDescription, pageKeywords, ogImage, canonicalURL } = Astro.props;
+
+const fullUrl = new URL(Astro.url.pathname, Astro.site).href;
+const finalCanonicalURL = canonicalURL ? String(canonicalURL) : fullUrl;
+const finalOgImage = ogImage || seoData.home.ogImage; // 기본 OG 이미지
+const finalKeywords = pageKeywords || seoData.home.keywords;
+
+// Google Analytics 4
+const GA_MEASUREMENT_ID = import.meta.env.GA_MEASUREMENT_ID;
+
+// 네이버 서치어드바이저, 구글 서치콘솔 인증 코드
+const NAVER_SITE_VERIFICATION = import.meta.env.NAVER_SITE_VERIFICATION;
+const GOOGLE_SITE_VERIFICATION = import.meta.env.GOOGLE_SITE_VERIFICATION;
+
+// JSON-LD 구조화 데이터 (Organization, Service, FAQ 스키마 예시)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${Astro.site}/#organization`,
+      "name": "유통스타트",
+      "url": Astro.site,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${Astro.site}/images/logo/logo-full.svg`
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+82-2-1234-5678",
+        "contactType": "Customer Service",
+        "areaServed": "KR",
+        "availableLanguage": "ko"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${Astro.site}/#website`,
+      "url": Astro.site,
+      "name": "유통스타트",
+      "publisher": { "@id": `${Astro.site}/#organization` },
+      "inLanguage": "ko-KR"
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${fullUrl}/#webpage`,
+      "url": fullUrl,
+      "name": pageTitle,
+      "isPartOf": { "@id": `${Astro.site}/#website` },
+      "description": pageDescription,
+      "inLanguage": "ko-KR",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": `${Astro.site}${finalOgImage}`
+      }
+    }
+  ]
+};
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription} />
+<meta name="keywords" content={finalKeywords} />
+<link rel="canonical" href={finalCanonicalURL} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={fullUrl} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:image" content={`${Astro.site}${finalOgImage}`} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={fullUrl} />
+<meta property="twitter:title" content={pageTitle} />
+<meta property="twitter:description" content={pageDescription} />
+<meta property="twitter:image" content={`${Astro.site}${finalOgImage}`} />
+
+<!-- Google Site Verification -->
+{GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />}
+
+<!-- Naver Site Verification -->
+{NAVER_SITE_VERIFICATION && <meta name="naver-site-verification" content={NAVER_SITE_VERIFICATION} />}
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<!-- Google Analytics -->
+{GA_MEASUREMENT_ID && (
+  <Fragment>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${GA_MEASUREMENT_ID}');
+    </script>
+  </Fragment>
+)}

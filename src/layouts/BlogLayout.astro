@@ -1,0 +1,52 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { formatDate } from '../lib/utils/formatDate';
+
+interface Props {
+  frontmatter: CollectionEntry<'blog'>['data'];
+}
+
+const { frontmatter } = Astro.props;
+---
+<BaseLayout title={`${frontmatter.title} | 블로그`} description={frontmatter.description}>
+  <article class="py-16 md:py-24">
+    <div class="max-w-content mx-auto px-4">
+      <!-- Header Section -->
+      <header class="text-center max-w-3xl mx-auto">
+        <p class="text-primary-600 font-semibold">{frontmatter.category}</p>
+        <h1 class="text-4xl md:text-5xl font-bold mt-2">{frontmatter.title}</h1>
+        <div class="mt-6 flex justify-center items-center gap-4 text-sm text-neutral-800">
+          <span>By {frontmatter.author}</span>
+          <span>&bull;</span>
+          <span>{formatDate(frontmatter.publishedAt)}</span>
+        </div>
+      </header>
+
+      <!-- Thumbnail -->
+      <img src={frontmatter.thumbnail} alt={frontmatter.title} class="mt-12 w-full max-w-4xl mx-auto rounded-lg shadow-lg" />
+
+      <!-- MDX Content -->
+      <div class="prose prose-lg max-w-3xl mx-auto mt-16">
+        <slot />
+      </div>
+
+      <!-- Tags -->
+      <div class="max-w-3xl mx-auto mt-12 flex flex-wrap gap-2">
+        {frontmatter.tags.map(tag => (
+          <span class="bg-neutral-100 text-neutral-800 text-sm font-medium px-3 py-1 rounded-full">{tag}</span>
+        ))}
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+<style>
+  /* Basic prose styling for MDX content. Can be extended with @tailwindcss/typography plugin */
+  .prose h2 { @apply text-2xl font-bold mt-12 mb-4; }
+  .prose h3 { @apply text-xl font-bold mt-8 mb-4; }
+  .prose p { @apply mb-4 leading-relaxed; }
+  .prose a { @apply text-primary-600 hover:underline; }
+  .prose ul { @apply list-disc list-inside mb-4; }
+  .prose li { @apply mb-2; }
+  .prose blockquote { @apply border-l-4 border-neutral-200 pl-4 italic text-neutral-800; }
+</style>

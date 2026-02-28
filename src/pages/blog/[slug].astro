@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTABanner from '../../components/common/CTABanner.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const formattedDate = entry.data.publishedAt.toLocaleDateString('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<BaseLayout title={`${entry.data.title} | 유통스타트 블로그`} description={entry.data.description}>
+  <article class="py-16 md:py-24 bg-white animate-fade-in-up">
+    <div class="max-w-3xl mx-auto px-4">
+      <header class="mb-12 text-center animate-fade-in-up">
+        <span class="inline-block bg-primary-100 text-primary-900 px-4 py-1.5 rounded-full text-sm font-bold tracking-wider mb-6">
+          {entry.data.category}
+        </span>
+        <h1 class="text-3xl md:text-5xl font-bold font-display text-primary-950 leading-tight text-balance">
+          {entry.data.title}
+        </h1>
+        <div class="mt-8 flex items-center justify-center gap-4 text-neutral-500 font-medium">
+          <span class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-primary-900 text-white flex items-center justify-center font-bold text-xs">U</div>
+            {entry.data.author}
+          </span>
+          <span>•</span>
+          <time>{formattedDate}</time>
+        </div>
+      </header>
+      
+      <div class="rounded-3xl overflow-hidden shadow-xl mb-16 animate-fade-in-up" style="animation-delay: 100ms;">
+        <img src={entry.data.thumbnail} alt={entry.data.title} class="w-full h-auto object-cover aspect-video" />
+      </div>
+      
+      <div class="prose prose-lg mx-auto prose-primary prose-headings:font-display prose-headings:font-bold prose-headings:-tracking-tight prose-a:text-accent-500 hover:prose-a:text-accent-600 animate-fade-in-up" style="animation-delay: 200ms;">
+        <Content />
+      </div>
+      
+      <div class="mt-16 pt-8 border-t border-neutral-100 animate-fade-in-up" style="animation-delay: 300ms;">
+        <div class="flex flex-wrap gap-2">
+          {entry.data.tags.map(tag => (
+            <span class="bg-primary-50 text-primary-700 px-3 py-1 rounded-md text-sm font-medium hover:bg-primary-100 transition-colors cursor-pointer">#{tag}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </article>
+  <CTABanner />
+</BaseLayout>
+
+<style>
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

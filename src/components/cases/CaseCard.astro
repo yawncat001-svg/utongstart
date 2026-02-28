@@ -1,0 +1,51 @@
+---
+interface Props {
+  caseItem: {
+    slug: string;
+    data: {
+      title: string;
+      company: string;
+      category: string;
+      thumbnail: string;
+      summary: string;
+      results: {
+        metric1Label: string;
+        metric1Value: string;
+        metric2Label: string;
+        metric2Value: string;
+      };
+    };
+  };
+}
+
+const { caseItem } = Astro.props;
+const { data, slug } = caseItem;
+---
+<a href={`/cases/${slug}`} class="bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
+  <div class="aspect-video w-full bg-neutral-200 overflow-hidden relative">
+    <img src={data.thumbnail} alt={data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+    <div class="absolute top-4 left-4">
+      <span class="bg-primary-950/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold">
+        {data.category}
+      </span>
+    </div>
+  </div>
+  <div class="p-6">
+    <p class="text-sm text-primary-600 font-bold">{data.company}</p>
+    <h3 class="mt-2 text-xl font-bold text-primary-950 font-display group-hover:text-primary-600 transition-colors">
+      {data.title}
+    </h3>
+    <p class="mt-3 text-neutral-600 text-sm line-clamp-2">{data.summary}</p>
+    
+    <div class="mt-6 pt-6 border-t border-neutral-100 grid grid-cols-2 gap-4">
+      <div>
+        <dt class="text-[10px] text-neutral-500 font-medium uppercase tracking-wider">{data.results.metric1Label}</dt>
+        <dd class="mt-1 text-lg font-bold text-primary-900">{data.results.metric1Value}</dd>
+      </div>
+      <div>
+        <dt class="text-[10px] text-neutral-500 font-medium uppercase tracking-wider">{data.results.metric2Label}</dt>
+        <dd class="mt-1 text-lg font-bold text-primary-900">{data.results.metric2Value}</dd>
+      </div>
+    </div>
+  </div>
+</a>

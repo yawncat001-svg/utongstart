@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTABanner from '../../components/common/CTABanner.astro';
+
+export async function getStaticPaths() {
+  const caseEntries = await getCollection('cases');
+  return caseEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<BaseLayout title={`${entry.data.title} | 유통스타트 성공사례`} description={entry.data.summary}>
+  <article class="py-16 md:py-24 animate-fade-in-up">
+    <div class="max-w-4xl mx-auto px-4">
+      <header class="mb-12 text-center animate-fade-in-up">
+        <div class="inline-block bg-primary-100 text-primary-900 px-4 py-1.5 rounded-full text-sm font-bold tracking-wider mb-6">
+          {entry.data.company} • {entry.data.category}
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold font-display text-primary-950 leading-tight text-balance">
+          {entry.data.title}
+        </h1>
+      </header>
+      
+      <div class="rounded-3xl overflow-hidden shadow-2xl mb-16 animate-fade-in-up" style="animation-delay: 100ms;">
+        <img src={entry.data.thumbnail} alt={entry.data.title} class="w-full h-auto object-cover aspect-[2/1]" />
+      </div>
+      
+      <div class="bg-white border text-center border-neutral-100 rounded-3xl p-8 md:p-12 mb-16 shadow-lg shadow-primary-900/5 grid grid-cols-2 gap-8 divide-x divide-neutral-100 animate-fade-in-up" style="animation-delay: 200ms;">
+        <div class="flex flex-col items-center justify-center">
+          <p class="text-sm text-neutral-500 font-bold mb-2 uppercase tracking-widest">{entry.data.results.metric1Label}</p>
+          <p class="text-4xl lg:text-5xl text-accent-500 font-black">{entry.data.results.metric1Value}</p>
+        </div>
+        {entry.data.results.metric2Label && (
+          <div class="flex flex-col items-center justify-center">
+            <p class="text-sm text-neutral-500 font-bold mb-2 uppercase tracking-widest">{entry.data.results.metric2Label}</p>
+            <p class="text-4xl lg:text-5xl text-primary-900 font-black">{entry.data.results.metric2Value}</p>
+          </div>
+        )}
+      </div>
+
+      <div class="prose prose-lg mx-auto prose-primary prose-headings:font-display prose-headings:font-bold prose-a:text-accent-500 hover:prose-a:text-accent-600 prose-img:rounded-2xl animate-fade-in-up" style="animation-delay: 300ms;">
+        <Content />
+      </div>
+    </div>
+  </article>
+  <CTABanner />
+</BaseLayout>
+
+<style>
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

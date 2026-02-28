@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceHero from '../../components/services/ServiceHero.astro';
+import CaseCard from '../../components/cases/CaseCard.astro';
+import { seoData } from '../../data/seo';
+
+const allCases = await getCollection('cases');
+const sortedCases = allCases.sort((a, b) => {
+  return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+});
+
+const seo = seoData.cases;
+---
+
+<BaseLayout title={seo.title} description={seo.description}>
+  <ServiceHero 
+    title="성공사례"
+    subtitle="유통스타트는 결과로 증명합니다. 수많은 제조사들이 유통스타트와 함께 시장의 문을 열었습니다."
+  />
+
+  <section class="py-16 md:py-24">
+    <div class="max-w-content mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {allCases.map(caseItem => (
+          <CaseCard caseItem={caseItem} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

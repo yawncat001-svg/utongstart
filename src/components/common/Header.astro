@@ -1,0 +1,31 @@
+---
+import { navItems } from '../../data/navigation';
+---
+<header class="bg-primary-950 text-white sticky top-0 z-50">
+  <nav class="max-w-content mx-auto px-4 py-4 flex justify-between items-center">
+    <a href="/" class="flex items-center gap-2 group">
+      <div class="bg-accent-500 p-1.5 rounded-lg group-hover:bg-accent-400 transition-colors">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+      </div>
+      <span class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-200">
+        유통스타트
+      </span>
+    </a>
+    <ul class="hidden md:flex space-x-6">
+      {navItems.map(item => (
+        <li>
+          <a href={item.href} class="hover:text-accent-400 transition-colors">
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a href="/contact" class="hidden md:inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+      무료 상담 신청
+    </a>
+    <button class="md:hidden">
+      <!-- 모바일 메뉴 아이콘 SVG가 필요합니다 -->
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+    </button>
+  </nav>
+</header>

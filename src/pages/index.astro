@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/home/HeroSection.astro';
+import ServiceCards from '../components/home/ServiceCards.astro';
+import PainPointSection from '../components/home/PainPointSection.astro';
+import ProcessFlow from '../components/home/ProcessFlow.astro';
+import CaseHighlight from '../components/home/CaseHighlight.astro';
+import StatsCounter from '../components/home/StatsCounter.astro';
+import CTABanner from '../components/common/CTABanner.astro';
+import { seoData } from '../data/seo';
+
+const seo = seoData.home;
+---
+
+<BaseLayout title={seo.title} description={seo.description}>
+	<HeroSection />
+	<ServiceCards />
+	<PainPointSection />
+	<ProcessFlow />
+	<CaseHighlight />
+	<StatsCounter />
+	<CTABanner />
+</BaseLayout>

@@ -1,0 +1,20 @@
+name = "utongstart-web"
+main = "./.dev/index.js" # Astro build output for Cloudflare Pages Functions
+compatibility_date = "2026-02-01"
+
+[site]
+bucket = "./dist" # Astro build output directory
+
+[[d1_databases]]
+binding = "D1_DATABASE" # 이 이름으로 Astro에서 import.meta.env.D1_DATABASE 로 접근
+database_name = "utongstart-db"
+database_id = "<Cloudflare Dashboard에서 생성 후 입력>"
+
+# 환경 변수는 Cloudflare Pages 대시보드에서 설정하는 것을 권장합니다.
+# [vars]
+# KAKAO_CHANNEL_KEY = "YOUR_KAKAO_CHANNEL_KEY"
+# GA_MEASUREMENT_ID = "YOUR_GA_MEASUREMENT_ID"
+# NAVER_SITE_VERIFICATION = "YOUR_NAVER_SITE_VERIFICATION_CODE"
+# GOOGLE_SITE_VERIFICATION = "YOUR_GOOGLE_SITE_VERIFICATION_CODE"
+# NOTIFICATION_EMAIL = "contact@utongstart.co.kr"
+# RESEND_API_KEY = "YOUR_RESEND_API_KEY"

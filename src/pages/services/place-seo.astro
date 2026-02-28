@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceHero from '../../components/services/ServiceHero.astro';
+import CTABanner from '../../components/common/CTABanner.astro';
+import { seoData } from '../../data/seo';
+
+const seo = seoData.placeSeo;
+---
+<BaseLayout title={seo.title} description={seo.description}>
+  <ServiceHero 
+    title="플레이스 상위노출"
+    subtitle="어뷰징 없는 100% 정상 로직으로 네이버 플레이스 순위를 높여 신규 고객을 확보합니다."
+  />
+
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-content mx-auto px-4 text-center">
+      <h2 class="text-section">유통스타트의 플레이스 SEO 원칙</h2>
+      <div class="mt-12 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-6 border rounded-lg">
+          <h3 class="text-xl font-bold">정상적인 최적화</h3>
+          <p class="mt-2">네이버가 권장하는 가이드라인을 준수하여 장기적으로 안정적인 순위를 유지합니다.</p>
+        </div>
+        <div class="p-6 border rounded-lg">
+          <h3 class="text-xl font-bold">데이터 기반 관리</h3>
+          <p class="mt-2">키워드, 트래픽, 리뷰 데이터를 분석하여 매주/매월 개선 방향을 리포트합니다.</p>
+        </div>
+        <div class="p-6 border rounded-lg">
+          <h3 class="text-xl font-bold">대표님 시간 절약</h3>
+          <p class="mt-2">플레이스 관리에 쏟는 시간을 아껴드리고, 대표님은 사업 본질에만 집중할 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <CTABanner />
+</BaseLayout>

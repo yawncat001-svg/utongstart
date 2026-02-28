@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceHero from '../../components/services/ServiceHero.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import { seoData } from '../../data/seo';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => {
+  return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+});
+
+const featuredPost = sortedPosts.find(post => post.data.featured);
+const regularPosts = sortedPosts.filter(post => !post.data.featured);
+
+const seo = seoData.blog;
+---
+
+<BaseLayout title={seo.title} description={seo.description}>
+  <ServiceHero 
+    title="블로그"
+    subtitle="성공적인 유통을 위한 유용한 팁과 인사이트를 공유합니다."
+  />
+
+  <section class="py-16 md:py-24">
+    <div class="max-w-content mx-auto px-4">
+      <!-- Featured Post -->
+      {featuredPost && (
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold mb-8">Featured Post</h2>
+          <a href={`/blog/${featuredPost.slug}`} class="group grid md:grid-cols-2 gap-8 items-center">
+            <img src={featuredPost.data.thumbnail} alt={featuredPost.data.title} class="w-full h-auto aspect-video object-cover rounded-lg" />
+            <div>
+              <h3 class="text-3xl font-bold group-hover:text-primary-500 leading-tight">{featuredPost.data.title}</h3>
+              <p class="mt-4 text-neutral-800">{featuredPost.data.description}</p>
+            </div>
+          </a>
+        </div>
+      )}
+
+      <!-- Regular Posts -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+        {regularPosts.map(post => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  frontmatter: CollectionEntry<'cases'>['data'];
+}
+
+const { frontmatter } = Astro.props;
+---
+<BaseLayout title={`${frontmatter.title} | 성공사례`} description={frontmatter.summary}>
+  <article class="py-16 md:py-24">
+    <div class="max-w-content mx-auto px-4">
+      <!-- Header Section -->
+      <header class="text-center max-w-3xl mx-auto">
+        <p class="text-primary-600 font-semibold">{frontmatter.company}</p>
+        <h1 class="text-4xl md:text-5xl font-bold mt-2">{frontmatter.title}</h1>
+        <p class="mt-4 text-lg text-neutral-800">{frontmatter.summary}</p>
+      </header>
+
+      <!-- Stats Section -->
+      <div class="mt-12 flex justify-center gap-8 md:gap-16 p-8 bg-primary-50 rounded-lg">
+        <div class="text-center">
+          <p class="text-sm text-neutral-800">{frontmatter.results.metric1Label}</p>
+          <p class="text-4xl font-bold text-accent-500">{frontmatter.results.metric1Value}</p>
+        </div>
+        {frontmatter.results.metric2Label && (
+          <div class="text-center">
+            <p class="text-sm text-neutral-800">{frontmatter.results.metric2Label}</p>
+            <p class="text-4xl font-bold text-accent-500">{frontmatter.results.metric2Value}</p>
+          </div>
+        )}
+      </div>
+
+      <!-- Thumbnail -->
+      <img src={frontmatter.thumbnail} alt={frontmatter.title} class="mt-12 w-full max-w-4xl mx-auto rounded-lg shadow-lg" />
+
+      <!-- MDX Content -->
+      <div class="prose prose-lg max-w-3xl mx-auto mt-16">
+        <slot />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+<style>
+  /* Basic prose styling for MDX content */
+  .prose h2 { @apply text-2xl font-bold mt-12 mb-4; }
+  .prose p { @apply mb-4 leading-relaxed; }
+  .prose a { @apply text-primary-600 hover:underline; }
+  .prose ul { @apply list-disc list-inside mb-4; }
+  .prose li { @apply mb-2; }
+</style>
