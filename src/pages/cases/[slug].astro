@@ -13,49 +13,89 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+const categoryLabels: Record<string, string> = {
+  'utongstart': '유통스타트 프로그램',
+  'live-commerce': '라이브커머스 대행',
+  'place-seo': '플레이스 상위노출'
+};
 ---
+
 <BaseLayout title={`${entry.data.title} | 유통스타트 성공사례`} description={entry.data.summary}>
-  <article class="py-16 md:py-24 animate-fade-in-up">
-    <div class="max-w-4xl mx-auto px-4">
-      <header class="mb-12 text-center animate-fade-in-up">
-        <div class="inline-block bg-primary-100 text-primary-900 px-4 py-1.5 rounded-full text-sm font-bold tracking-wider mb-6">
-          {entry.data.company} • {entry.data.category}
-        </div>
-        <h1 class="text-4xl md:text-5xl font-bold font-display text-primary-950 leading-tight text-balance">
+  <article class="bg-white overflow-hidden">
+    <!-- Case Header -->
+    <div class="bg-primary-950 py-20 md:py-32 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10 pointer-events-none">
+        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M0 100 L100 0 L100 100 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+      <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+        <span class="inline-block px-4 py-1.5 bg-accent-500 text-white text-xs font-black rounded-full mb-8 tracking-widest uppercase animate-fade-in-up">
+          {categoryLabels[entry.data.category] || entry.data.category}
+        </span>
+        <h1 class="text-3xl md:text-5xl font-black text-white leading-tight tracking-tight animate-fade-in-up" style="animation-delay: 100ms;">
           {entry.data.title}
         </h1>
-      </header>
-      
-      <div class="rounded-3xl overflow-hidden shadow-2xl mb-16 animate-fade-in-up" style="animation-delay: 100ms;">
-        <img src={entry.data.thumbnail} alt={entry.data.title} class="w-full h-auto object-cover aspect-[2/1]" />
+        <p class="mt-8 text-xl text-primary-200 font-bold animate-fade-in-up" style="animation-delay: 200ms;">
+          상호명: {entry.data.company}
+        </p>
       </div>
-      
-      <div class="bg-white border text-center border-neutral-100 rounded-3xl p-8 md:p-12 mb-16 shadow-lg shadow-primary-900/5 grid grid-cols-2 gap-8 divide-x divide-neutral-100 animate-fade-in-up" style="animation-delay: 200ms;">
+    </div>
+
+    <!-- Result Snapshot -->
+    <div class="max-w-4xl mx-auto px-4 -mt-16 relative z-20 animate-fade-in-up" style="animation-delay: 300ms;">
+      <div class="bg-white rounded-[32px] shadow-2xl border border-neutral-100 p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-12 divide-y md:divide-y-0 md:divide-x divide-neutral-100 text-center">
         <div class="flex flex-col items-center justify-center">
-          <p class="text-sm text-neutral-500 font-bold mb-2 uppercase tracking-widest">{entry.data.results.metric1Label}</p>
-          <p class="text-4xl lg:text-5xl text-accent-500 font-black">{entry.data.results.metric1Value}</p>
+          <p class="text-sm text-neutral-500 font-bold mb-3 uppercase tracking-widest">{entry.data.results.metric1Label}</p>
+          <p class="text-5xl lg:text-6xl text-accent-500 font-black tracking-tighter">{entry.data.results.metric1Value}</p>
         </div>
         {entry.data.results.metric2Label && (
-          <div class="flex flex-col items-center justify-center">
-            <p class="text-sm text-neutral-500 font-bold mb-2 uppercase tracking-widest">{entry.data.results.metric2Label}</p>
-            <p class="text-4xl lg:text-5xl text-primary-900 font-black">{entry.data.results.metric2Value}</p>
+          <div class="flex flex-col items-center justify-center pt-8 md:pt-0">
+            <p class="text-sm text-neutral-500 font-bold mb-3 uppercase tracking-widest">{entry.data.results.metric2Label}</p>
+            <p class="text-5xl lg:text-6xl text-primary-950 font-black tracking-tighter">{entry.data.results.metric2Value}</p>
           </div>
         )}
       </div>
+    </div>
 
-      <div class="prose prose-lg mx-auto prose-primary prose-headings:font-display prose-headings:font-bold prose-a:text-accent-500 hover:prose-a:text-accent-600 prose-img:rounded-2xl animate-fade-in-up" style="animation-delay: 300ms;">
-        <Content />
+    <div class="py-16 md:py-24">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="rounded-[32px] overflow-hidden shadow-xl mb-20 animate-fade-in-up" style="animation-delay: 400ms;">
+          <img src={entry.data.thumbnail} alt={entry.data.title} class="w-full h-auto object-cover aspect-video" />
+        </div>
+
+        <div class="prose prose-lg md:prose-xl mx-auto prose-primary 
+          prose-headings:text-primary-950 prose-headings:font-bold prose-headings:tracking-tighter 
+          prose-p:text-neutral-700 prose-p:leading-relaxed 
+          prose-img:rounded-3xl prose-img:shadow-2xl
+          prose-blockquote:italic prose-blockquote:text-primary-900 prose-blockquote:font-medium prose-blockquote:border-l-accent-500
+          prose-strong:text-primary-950 prose-strong:font-black
+          prose-a:text-accent-500 hover:prose-a:text-accent-600 transition-colors
+          animate-fade-in-up" 
+          style="animation-delay: 500ms;"
+        >
+          <Content />
+        </div>
+        
+        <div class="mt-20 pt-10 border-t border-neutral-100 text-center animate-fade-in-up" style="animation-delay: 600ms;">
+           <h4 class="text-lg font-bold text-primary-950 mb-6 font-display">이와 비슷한 성과를 내고 싶으신가요?</h4>
+           <a href="/contact" class="inline-block bg-primary-950 hover:bg-primary-900 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-xl active:scale-95">
+             지금 바로 무료 상담 신청하기
+           </a>
+        </div>
       </div>
     </div>
   </article>
+
   <CTABanner />
 </BaseLayout>
 
 <style>
   .animate-fade-in-up {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   @keyframes fadeInUp {
     to {

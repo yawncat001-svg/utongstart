@@ -152,6 +152,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
+"distribution-strategy.mdx": {
+	id: "distribution-strategy.mdx";
+  slug: "distribution-strategy";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "wadiz-checklist.mdx": {
 	id: "wadiz-checklist.mdx";
   slug: "wadiz-checklist";
@@ -164,6 +171,13 @@ declare module 'astro:content' {
 "case-001.mdx": {
 	id: "case-001.mdx";
   slug: "case-001";
+  body: string;
+  collection: "cases";
+  data: InferEntrySchema<"cases">
+} & { render(): Render[".mdx"] };
+"case-002.mdx": {
+	id: "case-002.mdx";
+  slug: "case-002";
   body: string;
   collection: "cases";
   data: InferEntrySchema<"cases">

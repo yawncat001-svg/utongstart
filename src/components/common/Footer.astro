@@ -1,38 +1,139 @@
 ---
 const currentYear = new Date().getFullYear();
 ---
-<footer class="bg-primary-950 text-white py-12">
-  <div class="max-w-content mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-    <div>
-      <h3 class="text-lg font-bold mb-4">유통스타트</h3>
-      <p class="text-sm text-primary-200">
-        제조사의 첫 유통 경험을 설계합니다.
-      </p>
-    </div>
-    <div>
-      <h4 class="font-bold mb-4">서비스</h4>
-      <ul class="space-y-2 text-sm">
-        <li><a href="/services/utongstart" class="hover:text-accent-400">유통스타트</a></li>
-        <li><a href="/services/live-commerce" class="hover:text-accent-400">라이브커머스</a></li>
-        <li><a href="/services/place-seo" class="hover:text-accent-400">플레이스 상위노출</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 class="font-bold mb-4">회사</h4>
-      <ul class="space-y-2 text-sm">
-        <li><a href="/about" class="hover:text-accent-400">회사 소개</a></li>
-        <li><a href="/blog" class="hover:text-accent-400">블로그</a></li>
-        <li><a href="/contact" class="hover:text-accent-400">상담 신청</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 class="font-bold mb-4">문의</h4>
-      <p class="text-sm">Email: contact@utongstart.co.kr</p>
-      <p class="text-sm">Tel: 02-1234-5678</p>
-    </div>
+<footer class="bg-primary-950 text-white pt-20 pb-12 border-t border-white/5 relative overflow-hidden">
+  <!-- Subtle pattern overlay -->
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none">
+    <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M0 0 L100 100 M100 0 L0 100" stroke="currentColor" stroke-width="0.1"></path>
+    </svg>
   </div>
-  <div class="max-w-content mx-auto px-4 mt-8 pt-8 border-t border-primary-800 text-center text-sm text-primary-300">
-    <p>&copy; {currentYear} HelpLab Inc. All rights reserved.</p>
-    <p class="mt-2">개인정보처리방침 | 이용약관</p>
+
+  <div class="max-w-content mx-auto px-4 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20">
+      <div class="md:col-span-4">
+        <a href="/" class="flex items-center gap-2 group mb-8">
+          <div class="bg-accent-500 p-1.5 rounded-lg">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+          </div>
+          <span class="text-2xl font-black tracking-tighter">유통스타트</span>
+        </a>
+        <p class="text-primary-200/70 text-sm leading-relaxed max-w-xs mb-8">
+          제조사의 첫 유통 경험을 설계합니다. 대행사에 의존하지 않는 독립적인 유통 판로 개척의 파트너가 되어드립니다.
+        </p>
+        <div class="flex gap-4">
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-500 transition-all group" aria-label="블로그">
+             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2m-5 14H7v-2h7v2m3-4H7v-2h10v2m0-4H7V7h10v2z"/></svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-500 transition-all group" aria-label="카카오톡">
+             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.558 1.712 4.8 4.312 6.085l-.805 2.943c-.07.25.045.51.263.633.08.045.17.067.262.067.143 0 .285-.053.393-.157l3.415-2.29c.382.045.77.068 1.16.068 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="md:col-span-2">
+        <h4 class="text-sm font-black text-white uppercase tracking-widest mb-8">서비스</h4>
+        <ul class="space-y-4 text-sm text-primary-200/60">
+          <li><a href="/services/utongstart" class="hover:text-accent-400 transition-colors">유통스타트 프로그램</a></li>
+          <li><a href="/services/live-commerce" class="hover:text-accent-400 transition-colors">라이브커머스 대행</a></li>
+          <li><a href="/services/place-seo" class="hover:text-accent-400 transition-colors">플레이스 상위노출</a></li>
+          <li><a href="/pricing" class="hover:text-accent-400 transition-colors">요금 안내</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-2">
+        <h4 class="text-sm font-black text-white uppercase tracking-widest mb-8">회사/인사이트</h4>
+        <ul class="space-y-4 text-sm text-primary-200/60">
+          <li><a href="/about" class="hover:text-accent-400 transition-colors">회사 소개</a></li>
+          <li><a href="/cases" class="hover:text-accent-400 transition-colors">성공사례</a></li>
+          <li><a href="/blog" class="hover:text-accent-400 transition-colors">블로그 리포트</a></li>
+          <li><a href="/contact" class="hover:text-accent-400 transition-colors">무료 상담 신청</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-4">
+        <h4 class="text-sm font-black text-white uppercase tracking-widest mb-8">뉴스레터 구독</h4>
+        <p class="text-sm text-primary-200/60 mb-6">최신 유통 트렌드와 성공 전략을 보내드립니다.</p>
+        <form id="newsletter-form" class="flex gap-2">
+          <input 
+            type="email" 
+            name="email"
+            placeholder="이메일 주소" 
+            class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm flex-grow focus:outline-none focus:ring-1 focus:ring-accent-500 transition-all placeholder:text-white/20"
+            required
+          />
+          <button type="submit" class="bg-primary-800 hover:bg-primary-700 text-white font-bold px-6 py-3 rounded-lg text-sm transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+            구독
+          </button>
+        </form>
+        <div id="newsletter-message" class="mt-4 text-xs font-medium hidden"></div>
+      </div>
+    </div>
+
+    <div class="mt-20 pt-10 border-t border-white/5 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div class="text-[12px] text-primary-200/40 leading-relaxed font-medium">
+        (주)헬프랩 | 서울시 성동구 서울슢2길 32-14,지하1층(갤러리아 포례)<br/>
+        TEL: 02-6909-5710 | Email: contact@utongstart.co.kr
+      </div>
+      <div class="flex lg:justify-end gap-6 text-[12px] font-bold text-primary-200/40">
+        <a href="#" class="hover:text-white transition-colors">개인정보처리방침</a>
+        <a href="#" class="hover:text-white transition-colors">이용약관</a>
+        <span class="font-medium">© {currentYear} HELFLAB. All rights reserved.</span>
+      </div>
+    </div>
   </div>
 </footer>
+
+<script>
+  function setupNewsletter() {
+    const form = document.getElementById('newsletter-form') as HTMLFormElement;
+    const message = document.getElementById('newsletter-message') as HTMLDivElement;
+    const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    if (!form || !message) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const email = formData.get('email');
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = '처리 중...';
+      message.classList.add('hidden');
+
+      try {
+        const response = await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        message.classList.remove('hidden');
+        if (response.ok) {
+          message.innerText = '구독 감사합니다! 환영 이메일이 발송되었습니다.';
+          message.className = 'mt-4 text-xs font-bold text-accent-400';
+          form.reset();
+        } else {
+          message.innerText = data.message || '오류가 발생했습니다.';
+          message.className = 'mt-4 text-xs font-bold text-red-400';
+        }
+      } catch (err) {
+        message.classList.remove('hidden');
+        message.innerText = '네트워크 연결 상태를 확인해주세요.';
+        message.className = 'mt-4 text-xs font-bold text-red-100';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '구독';
+      }
+    });
+  }
+
+  // 초기 실행
+  setupNewsletter();
+
+  // Astro View Transitions 대응
+  document.addEventListener('astro:after-swap', setupNewsletter);
+</script>

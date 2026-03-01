@@ -6,9 +6,30 @@ interface Props {
 
 const { title, subtitle } = Astro.props;
 ---
-<section class="bg-primary-950 text-white py-20 md:py-24">
-  <div class="max-w-content mx-auto px-4 text-center">
-    <h1 class="text-3xl md:text-5xl font-bold">{title}</h1>
-    <p class="mt-4 text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto">{subtitle}</p>
+<section class="bg-primary-950 text-white pt-24 pb-20 md:pt-32 md:pb-24 relative overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-tr from-primary-950 via-primary-900 to-primary-950 opacity-90"></div>
+    <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-accent-500 rounded-full blur-[120px] opacity-20 animate-pulse"></div>
+  </div>
+  
+  <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+    <div class="inline-flex items-center gap-2 mb-8 bg-white/10 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
+      <span class="w-2 h-2 rounded-full bg-accent-500"></span>
+      <span class="text-xs font-bold text-primary-200 tracking-widest uppercase">Specialist Program</span>
+    </div>
+    
+    <h1 class="text-3xl md:text-6xl font-black leading-tight tracking-tighter mb-8 drop-shadow-sm">
+      {title}
+    </h1>
+    
+    <p class="text-body-lg text-primary-100/80 max-w-2xl mx-auto leading-relaxed">
+      {subtitle}
+    </p>
+    
+    <div class="mt-12 flex flex-col sm:flex-row justify-center gap-4">
+      <a href="/contact" class="bg-accent-500 hover:bg-accent-600 active:scale-95 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-xl shadow-accent-500/20">
+        무료 상담 신청하기
+      </a>
+    </div>
   </div>
 </section>

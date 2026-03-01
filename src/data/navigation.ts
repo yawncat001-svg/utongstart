@@ -8,7 +8,7 @@ export const navItems = [
     "href": "/services/live-commerce",
   },
   {
-    "label": "플레이스 상위노출",
+    "label": "플레이스",
     "href": "/services/place-seo",
   },
   {
@@ -22,5 +22,9 @@ export const navItems = [
   {
     "label": "블로그",
     "href": "/blog",
+  },
+  {
+    "label": "회사소개",
+    "href": "/about",
   }
 ];

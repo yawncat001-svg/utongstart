@@ -1,0 +1,79 @@
+---
+interface Props {
+  faqs: {
+    question: string;
+    answer: string;
+  }[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<div class="space-y-4 max-w-4xl mx-auto">
+  {faqs.map((faq, index) => (
+    <div class="faq-item border border-neutral-200 rounded-xl overflow-hidden bg-white shadow-sm transition-all hover:border-neutral-300">
+      <button 
+        class="faq-trigger w-full px-6 py-5 text-left flex justify-between items-center group focus:outline-none"
+        aria-label="질문 열기"
+      >
+        <span class="text-lg font-bold text-neutral-900 group-hover:text-primary-600 transition-colors">
+          {faq.question}
+        </span>
+        <svg 
+          class="w-5 h-5 text-neutral-400 group-hover:text-primary-600 transform transition-transform duration-300" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+      <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+        <div class="px-6 pb-6 text-neutral-700 leading-relaxed border-t border-neutral-100 mt-0 pt-4">
+          {faq.answer}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  function setupFaq() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const trigger = item.querySelector('.faq-trigger');
+      const content = item.querySelector('.faq-content') as HTMLElement;
+      const icon = item.querySelector('svg');
+      
+      trigger?.addEventListener('click', () => {
+        const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
+        
+        // 다른 열려있는 아코디언 닫기 (옵션: 필요 시)
+        // faqItems.forEach(otherItem => { ... });
+
+        if (isOpen) {
+          content.style.maxHeight = '0px';
+          icon?.classList.remove('rotate-180');
+          item.classList.remove('ring-2', 'ring-primary-500/20', 'border-primary-200');
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          icon?.classList.add('rotate-180');
+          item.classList.add('ring-2', 'ring-primary-500/20', 'border-primary-200');
+        }
+      });
+    });
+  }
+
+  // 초기 실행
+  setupFaq();
+  
+  // Astro View Transitions 대응
+  document.addEventListener('astro:after-swap', setupFaq);
+</script>
+
+<style>
+  .faq-content {
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>

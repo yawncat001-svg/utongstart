@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ServiceHero from '../../components/services/ServiceHero.astro';
 import CaseCard from '../../components/cases/CaseCard.astro';
 import { seoData } from '../../data/seo';
 
@@ -11,21 +10,61 @@ const sortedCases = allCases.sort((a, b) => {
 });
 
 const seo = seoData.cases;
+const categories = ['전체', '유통스타트', '라이브커머스', '플레이스'];
 ---
 
 <BaseLayout title={seo.title} description={seo.description}>
-  <ServiceHero 
-    title="성공사례"
-    subtitle="유통스타트는 결과로 증명합니다. 수많은 제조사들이 유통스타트와 함께 시장의 문을 열었습니다."
-  />
+  <section class="py-16 md:py-24 bg-primary-950 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-tr from-primary-900 via-primary-950 to-primary-900 opacity-80"></div>
+    <div class="max-w-content mx-auto px-4 text-center relative z-10">
+      <span class="inline-block px-4 py-1.5 bg-accent-500 text-white text-xs font-black rounded-full mb-8 tracking-widest uppercase animate-fade-in-up">
+        Proven Results
+      </span>
+      <h1 class="text-display-md">결과로 증명하는 <br/><span class="text-accent-500 underline underline-offset-8 decoration-accent-500/20 italic">유통스타트의 성공사례</span></h1>
+      <p class="mt-8 text-body-lg text-primary-200 max-w-2xl mx-auto leading-relaxed">
+        어설픈 유통이 아닌, 실전 매출로 이어진 수많은 프로젝트들의 발자취를 확인하세요.
+      </p>
+    </div>
+  </section>
 
-  <section class="py-16 md:py-24">
+  <section class="py-16 md:py-24 bg-white">
     <div class="max-w-content mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {allCases.map(caseItem => (
+      <!-- Category Filter (UI Only) -->
+      <div class="flex flex-wrap gap-2 mb-16 overflow-x-auto no-scrollbar pb-4 border-b border-neutral-100 justify-center">
+        {categories.map((cat, idx) => (
+          <button 
+            class={`px-8 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap ${idx === 0 ? 'bg-primary-950 text-white shadow-xl' : 'bg-neutral-50 text-neutral-600 hover:bg-neutral-100'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {sortedCases.map(caseItem => (
           <CaseCard caseItem={caseItem} />
         ))}
       </div>
     </div>
   </section>
+
+  <section class="py-16 md:py-24 bg-primary-50">
+    <div class="max-w-content mx-auto px-4 text-center">
+      <h2 class="text-display-sm text-primary-950">다음 주인공은 당신입니다</h2>
+      <p class="mt-6 text-neutral-600">성장 가능성 있는 좋은 제품을 가지고 계신가요? 유통스타트가 날개를 달아드립니다.</p>
+      <a href="/contact" class="mt-10 inline-block bg-primary-950 hover:bg-primary-900 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-xl active:scale-95">
+        지금 바로 상담 시작하기
+      </a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

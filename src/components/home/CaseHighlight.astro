@@ -1,26 +1,38 @@
 ---
+import { getCollection } from 'astro:content';
+import CaseCard from '../cases/CaseCard.astro';
+
+const featuredCases = await getCollection('cases', ({ data }) => {
+  return data.featured === true;
+});
+
+const latestCases = featuredCases.length > 0 
+  ? featuredCases.slice(0, 3) 
+  : (await getCollection('cases')).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()).slice(0, 3);
 ---
+
 <section class="py-16 md:py-24 bg-white">
   <div class="max-w-content mx-auto px-4">
-    <div class="text-center">
-      <h2 class="text-3xl md:text-5xl font-bold text-primary-950">성공 사례 하이라이트</h2>
-      <p class="mt-4 text-lg text-neutral-800">우리는 다양한 제조사의 성공 사례를 만들어가고 있습니다.</p>
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-black text-primary-950 tracking-tighter">유통스타트의 성공 방정식</h2>
+      <p class="mt-6 text-body-lg text-neutral-600 max-w-2xl mx-auto">
+        수많은 제조사가 저희와 함께 불가능해 보이던 유통의 벽을 넘었습니다. 성과로 증명된 실전 케이스들을 확인해보세요.
+      </p>
     </div>
     
-    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="bg-primary-50 p-8 rounded-2xl border border-primary-100 group hover:shadow-lg transition-all">
-        <h3 class="mt-6 text-xl font-bold text-primary-950">와디즈 펀딩 1,000% 달성</h3>
-        <p class="mt-4 text-neutral-800 leading-relaxed">
-          와디즈 펀딩을 통해 시장성을 인정받은 제조사와 함께 성장을 이어가고 있습니다.
-        </p>
-      </div>
-      
-      <div class="bg-primary-50 p-8 rounded-2xl border border-primary-100 group hover:shadow-lg transition-all">
-        <h3 class="mt-6 text-xl font-bold text-primary-950">라이브 방송 매출 견인</h3>
-        <p class="mt-4 text-neutral-800 leading-relaxed">
-          라이브 방송을 통해 매출을 견인하고 브랜드인지도를 높이는 데 성공하였습니다.
-        </p>
-      </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {latestCases.map(caseItem => (
+        <CaseCard caseItem={caseItem} />
+      ))}
+    </div>
+
+    <div class="mt-16 text-center">
+      <a href="/cases" class="inline-flex items-center gap-2 group text-primary-600 font-bold hover:text-accent-500 transition-all">
+        전체 성공사례 확인하기 
+        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
     </div>
   </div>
 </section>

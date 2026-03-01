@@ -9,39 +9,52 @@ interface Package {
 }
 
 interface Props {
-  serviceName: string;
   packages: Package[];
 }
 
-const { serviceName, packages } = Astro.props;
+const { packages } = Astro.props;
 ---
-<section class="py-12 border-t border-neutral-100 first:border-t-0">
-  <div class="text-center mb-10">
-    <h2 class="text-2xl md:text-3xl font-bold font-display text-primary-950">{serviceName}</h2>
-  </div>
-  
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    {packages.map((pkg) => (
-      <div class={`p-8 rounded-2xl border ${pkg.highlight ? 'border-primary-500 shadow-lg scale-105' : 'border-neutral-200 shadow-sm'} bg-white relative`}>
-        {pkg.highlight && (
-          <span class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-500 text-white text-xs font-bold py-1 px-3 rounded-full">
-            Recommended
-          </span>
-        )}
-        <h3 class="text-xl font-bold text-primary-950">{pkg.name}</h3>
-        <p class="mt-2 text-neutral-600 text-sm">{pkg.description}</p>
-        <div class="mt-6">
-          <span class="text-3xl font-bold text-primary-950">{pkg.price}</span>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {packages.map(pkg => (
+    <div 
+      class={`pricing-card relative flex flex-col p-8 rounded-3xl bg-white border-2 transition-all duration-300 hover:shadow-card-hover ${pkg.highlight ? 'border-accent-500 ring-4 ring-accent-500/10 scale-105 z-10' : 'border-neutral-200 hover:border-neutral-300'}`}
+    >
+      {pkg.highlight && (
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent-500 text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">
+          가장 인기 있는 추천 패키지
         </div>
-        <ul class="mt-8 space-y-4">
-          {pkg.features.map(feature => (
-            <li class="flex items-start text-sm text-neutral-800">
-              <svg class="w-5 h-5 text-primary-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-              {feature}
-            </li>
-          ))}
-        </ul>
+      )}
+      
+      <div class="mb-8">
+        <h3 class={`text-xl font-bold ${pkg.highlight ? 'text-accent-600' : 'text-primary-950'}`}>
+          {pkg.name}
+        </h3>
+        <p class="mt-2 text-neutral-600 text-sm leading-relaxed">
+          {pkg.description}
+        </p>
+        <div class="mt-6 flex items-baseline gap-1">
+          <span class="text-4xl font-black text-primary-950 leading-none">{pkg.price}</span>
+        </div>
       </div>
-    ))}
-  </div>
-</section>
+
+      <ul class="flex-grow space-y-4 mb-10">
+        {pkg.features.map(feature => (
+          <li class="flex items-start gap-3">
+            <svg class={`w-5 h-5 shrink-0 ${pkg.highlight ? 'text-accent-500' : 'text-primary-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span class="text-neutral-800 text-sm">{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      <a 
+        href="/contact" 
+        class={`w-full py-4 px-6 rounded-xl text-center font-bold transition-all active:scale-95 ${pkg.highlight ? 'bg-accent-500 hover:bg-accent-600 text-white shadow-cta hover:shadow-cta-hover' : 'bg-primary-50 hover:bg-primary-100 text-primary-950 border border-primary-200'}`}
+      >
+        이 패키지로 상담하기
+      </a>
+    </div>
+  ))}
+</div>

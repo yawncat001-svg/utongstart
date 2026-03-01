@@ -1842,4 +1842,7 @@ AI 이미지 도구로 순차 생성할 때 아래 규칙을 지키면 전체 �
    - 조치: astro.config.mjs에서 통합 비활성화.
 3. **일부 API 라우트 고도화**:
    - 상담 신청(inquiry.ts) 및 뉴스레터(newsletter.ts)의 이메일 발송 로직은 현재 콘솔 로그 기반으로 안정화되어 있으며, Resend API 연동은 다음 단계에서 진행.
+4. ** 결제 기능 - 초기 배포시 제외함.
+    포트원 V2 경유 (<https://admin.portone.io/>) <mktwarrior@gmail.com> 어드민 체크
 
+---

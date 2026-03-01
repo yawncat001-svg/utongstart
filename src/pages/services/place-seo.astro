@@ -1,34 +1,92 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ServiceHero from '../../components/services/ServiceHero.astro';
+import PricingTable from '../../components/services/PricingTable.astro';
+import FAQAccordion from '../../components/services/FAQAccordion.astro';
 import CTABanner from '../../components/common/CTABanner.astro';
 import { seoData } from '../../data/seo';
+import { pricingData } from '../../data/pricing';
+import { faqs } from '../../data/faq';
 
 const seo = seoData.placeSeo;
+const placePricing = pricingData.placeSeo.packages;
+const placeFaq = faqs.filter(f => f.category === 'place-seo');
 ---
+
 <BaseLayout title={seo.title} description={seo.description}>
   <ServiceHero 
-    title="플레이스 상위노출"
-    subtitle="어뷰징 없는 100% 정상 로직으로 네이버 플레이스 순위를 높여 신규 고객을 확보합니다."
+    title="네이버 플레이스 상위노출 서비스"
+    subtitle="지역 타겟 고객이 가장 먼저 만나는 공간. 어뷰징 없는 건강한 SEO 방식으로 플레이스 순위를 최적화합니다."
   />
 
-  <section class="py-16 md:py-24 bg-white">
-    <div class="max-w-content mx-auto px-4 text-center">
-      <h2 class="text-section">유통스타트의 플레이스 SEO 원칙</h2>
-      <div class="mt-12 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="p-6 border rounded-lg">
-          <h3 class="text-xl font-bold">정상적인 최적화</h3>
-          <p class="mt-2">네이버가 권장하는 가이드라인을 준수하여 장기적으로 안정적인 순위를 유지합니다.</p>
+  <section class="py-16 md:py-24 bg-white overflow-hidden">
+    <div class="max-w-content mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+        <div>
+          <span class="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-sm font-bold rounded-full mb-6 italic tracking-wider">
+            Safe & Sustainable Growth
+          </span>
+          <h2 class="text-display-md text-primary-950 leading-tight">
+            매출로 이어지지 않는<br/>
+            <span class="text-accent-500 underline decoration-accent-500/20 underline-offset-8">허수 트래픽</span>은 멀리하세요.
+          </h2>
+          <p class="mt-8 text-body-lg text-neutral-700 leading-relaxed">
+            한 번 뜨고 사라지는 불법 프로그램은 위험합니다. 유통스타트는 네이버 알고리즘에 기초한 정보 최적화, 실제 고객 유입 유도, 양질의 리뷰 축적 등 정석적인 방법을 통해 
+            자연스럽고 견고한 상위 노출 환경을 구축합니다.
+          </p>
+          <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="flex flex-col gap-4">
+              <div class="w-10 h-10 bg-primary-900 text-white rounded-lg flex items-center justify-center font-bold">1</div>
+              <h4 class="font-bold text-primary-950">핵심 정보 최적화</h4>
+              <p class="text-sm text-neutral-600 leading-relaxed">검색 키워드와 플레이스 정보의 연관성을 극대화하여 네이버가 좋아하는 정보를 제공합니다.</p>
+            </div>
+            <div class="flex flex-col gap-4">
+              <div class="w-10 h-10 bg-primary-900 text-white rounded-lg flex items-center justify-center font-bold">2</div>
+              <h4 class="font-bold text-primary-950">리뷰 & 트래픽 관리</h4>
+              <p class="text-sm text-neutral-600 leading-relaxed">체크인 리뷰, 영수증 리뷰 유도 등 실제 고객들의 반응 데이터를 자연스럽게 쌓아갑니다.</p>
+            </div>
+          </div>
         </div>
-        <div class="p-6 border rounded-lg">
-          <h3 class="text-xl font-bold">데이터 기반 관리</h3>
-          <p class="mt-2">키워드, 트래픽, 리뷰 데이터를 분석하여 매주/매월 개선 방향을 리포트합니다.</p>
-        </div>
-        <div class="p-6 border rounded-lg">
-          <h3 class="text-xl font-bold">대표님 시간 절약</h3>
-          <p class="mt-2">플레이스 관리에 쏟는 시간을 아껴드리고, 대표님은 사업 본질에만 집중할 수 있습니다.</p>
+        <div class="relative">
+          <div class="absolute inset-0 bg-primary-50 rounded-[40px] rotate-3 scale-105 -z-10"></div>
+          <div class="bg-white p-8 rounded-[32px] shadow-2xl border border-neutral-100 divide-y divide-neutral-100 space-y-6">
+            <h4 class="font-bold text-lg text-primary-950">우리 업체 최적화 지수</h4>
+            <div class="pt-6 space-y-6">
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm"><span class="font-medium text-neutral-600">정보 연관성</span><span class="font-bold text-primary-600">92%</span></div>
+                <div class="h-2 bg-neutral-100 rounded-full overflow-hidden"><div class="h-full bg-primary-500 rounded-full" style="width: 92%"></div></div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm"><span class="font-medium text-neutral-600">고객 반응도</span><span class="font-bold text-accent-500">88%</span></div>
+                <div class="h-2 bg-neutral-100 rounded-full overflow-hidden"><div class="h-full bg-accent-500 rounded-full" style="width: 88%"></div></div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm"><span class="font-medium text-neutral-600">리뷰 긍정도</span><span class="font-bold text-primary-600">95%</span></div>
+                <div class="h-2 bg-neutral-100 rounded-full overflow-hidden"><div class="h-full bg-primary-500 rounded-full" style="width: 95%"></div></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-primary-50">
+    <div class="max-w-content mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-section text-primary-950">플레이스 상위노출 패키지</h2>
+        <p class="mt-4 text-body-lg text-neutral-700">관리 범위와 집중 키워드 수에 맞춰 선택하세요.</p>
+      </div>
+      <PricingTable packages={placePricing} />
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-white border-t border-neutral-100">
+    <div class="max-w-content mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-section text-primary-950">자주 묻는 질문</h2>
+      </div>
+      <FAQAccordion faqs={placeFaq} />
     </div>
   </section>
   

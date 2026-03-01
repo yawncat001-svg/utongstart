@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ServiceHero from '../../components/services/ServiceHero.astro';
 import PostCard from '../../components/blog/PostCard.astro';
 import { seoData } from '../../data/seo';
 
@@ -10,40 +9,108 @@ const sortedPosts = allPosts.sort((a, b) => {
   return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
 });
 
-const featuredPost = sortedPosts.find(post => post.data.featured);
-const regularPosts = sortedPosts.filter(post => !post.data.featured);
+const featuredPost = sortedPosts.find(post => post.data.featured) || sortedPosts[0];
+const regularPosts = sortedPosts.filter(post => post.slug !== (featuredPost ? featuredPost.slug : ''));
 
 const seo = seoData.blog;
+const categories = ['전체', '유통전략', '와디즈', '라이브커머스', '플레이스', '마케팅팁'];
 ---
 
 <BaseLayout title={seo.title} description={seo.description}>
-  <ServiceHero 
-    title="블로그"
-    subtitle="성공적인 유통을 위한 유용한 팁과 인사이트를 공유합니다."
-  />
+  <section class="py-16 md:py-24 bg-primary-50">
+    <div class="max-w-content mx-auto px-4 text-center">
+      <h1 class="text-display-md text-primary-950">유통 인사이트 블로그</h1>
+      <p class="mt-6 text-body-lg text-neutral-700 max-w-2xl mx-auto">
+        제조사 성공을 위한 유통 전략, 최신 트렌드, 그리고 실무 노하우를 아낌없이 공유합니다.
+      </p>
+    </div>
+  </section>
 
-  <section class="py-16 md:py-24">
+  <section class="py-16 md:py-24 bg-white">
     <div class="max-w-content mx-auto px-4">
       <!-- Featured Post -->
       {featuredPost && (
-        <div class="mb-16">
-          <h2 class="text-2xl font-bold mb-8">Featured Post</h2>
-          <a href={`/blog/${featuredPost.slug}`} class="group grid md:grid-cols-2 gap-8 items-center">
-            <img src={featuredPost.data.thumbnail} alt={featuredPost.data.title} class="w-full h-auto aspect-video object-cover rounded-lg" />
-            <div>
-              <h3 class="text-3xl font-bold group-hover:text-primary-500 leading-tight">{featuredPost.data.title}</h3>
-              <p class="mt-4 text-neutral-800">{featuredPost.data.description}</p>
+        <div class="mb-24">
+          <div class="flex items-center gap-2 mb-8">
+            <span class="w-8 h-px bg-accent-500"></span>
+            <span class="text-sm font-bold text-accent-600 tracking-widest uppercase">Editor's Pick</span>
+          </div>
+          <a href={`/blog/${featuredPost.slug}`} class="group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 aspect-[16/9] overflow-hidden rounded-[32px] shadow-2xl relative">
+              <img 
+                src={featuredPost.data.thumbnail} 
+                alt={featuredPost.data.title} 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+              />
+              <div class="absolute top-6 left-6">
+                <span class="bg-primary-950 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg">
+                  {featuredPost.data.category}
+                </span>
+              </div>
+            </div>
+            <div class="lg:col-span-5">
+              <time class="text-sm text-neutral-500">{featuredPost.data.publishedAt.toLocaleDateString('ko-KR')}</time>
+              <h3 class="mt-4 text-display-sm text-primary-950 group-hover:text-primary-600 transition-colors leading-tight">
+                {featuredPost.data.title}
+              </h3>
+              <p class="mt-6 text-body-lg text-neutral-600 line-clamp-3">
+                {featuredPost.data.description}
+              </p>
+              <div class="mt-8 flex items-center gap-4 text-primary-600 font-bold group-hover:gap-6 transition-all">
+                읽어보기
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </div>
             </div>
           </a>
         </div>
       )}
 
-      <!-- Regular Posts -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+      <!-- Category Filter (UI Only) -->
+      <div class="flex flex-wrap gap-2 mb-12 overflow-x-auto no-scrollbar pb-4 border-b border-neutral-100">
+        {categories.map((cat, idx) => (
+          <button 
+            class={`px-6 py-2.5 rounded-full text-sm font-bold transition-all whitespace-nowrap ${idx === 0 ? 'bg-primary-950 text-white shadow-lg' : 'bg-neutral-50 text-neutral-600 hover:bg-neutral-100'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <!-- Regular Posts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
         {regularPosts.map(post => (
           <PostCard post={post} />
         ))}
       </div>
     </div>
   </section>
+
+  <section class="py-16 md:py-24 bg-primary-950 text-white">
+    <div class="max-w-content mx-auto px-4 text-center">
+      <h2 class="text-display-sm">최신 유통 소식을 이메일로 받아보세요</h2>
+      <p class="mt-6 text-primary-200">매주 1회, 제조사를 위한 핵심 인사이트 리포트를 보내드립니다.</p>
+      <form class="mt-10 max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+        <input 
+          type="email" 
+          placeholder="이메일 주소를 입력하세요" 
+          class="flex-grow px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder:text-white/40"
+          required
+        />
+        <button type="submit" class="bg-accent-500 hover:bg-accent-600 text-white font-bold py-4 px-8 rounded-xl transition-all active:scale-95 shadow-lg">
+          구독하기
+        </button>
+      </form>
+      <p class="mt-4 text-xs text-white/40">언제든 구독을 취소할 수 있으며, 소중한 개인정보는 안전하게 보호됩니다.</p>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

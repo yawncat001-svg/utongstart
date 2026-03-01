@@ -1,27 +1,142 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PricingTable from '../components/services/PricingTable.astro';
+import FAQAccordion from '../components/services/FAQAccordion.astro';
 import CTABanner from '../components/common/CTABanner.astro';
-import { pricingData } from '../data/pricing';
 import { seoData } from '../data/seo';
+import { pricingData } from '../data/pricing';
+import { faqs } from '../data/faq';
 
 const seo = seoData.pricing;
 ---
+
 <BaseLayout title={seo.title} description={seo.description}>
-  <section class="py-16 md:py-24">
+  <section class="py-16 md:py-24 bg-primary-50">
+    <div class="max-w-content mx-auto px-4 text-center">
+      <h1 class="text-display-md text-primary-950">제조사 상황에 맞는 최적의 패키지</h1>
+      <p class="mt-6 text-body-lg text-neutral-700 max-w-2xl mx-auto">
+        거품을 뺀 합리적인 비용으로 최상의 결과를 만듭니다. 유통스타트만의 단계별 프로그램을 확인해보세요.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-20 bg-white" id="pricing-tabs">
     <div class="max-w-content mx-auto px-4">
-      <div class="text-center">
-        <h1 class="text-section">서비스 요금 안내</h1>
-        <p class="mt-4 text-lg text-neutral-800">
-          유통스타트의 모든 서비스는 합리적인 가격으로 최고의 효율을 제공합니다.
-        </p>
+      <!-- 탭 메뉴 -->
+      <div class="flex border-b border-neutral-200 mb-12 overflow-x-auto no-scrollbar justify-center">
+        <button 
+          class="tab-btn active px-8 py-4 text-lg font-bold text-neutral-500 hover:text-primary-600 border-b-4 border-transparent transition-all whitespace-nowrap"
+          data-tab="utongstart"
+        >
+          유통스타트
+        </button>
+        <button 
+          class="tab-btn px-8 py-4 text-lg font-bold text-neutral-500 hover:text-primary-600 border-b-4 border-transparent transition-all whitespace-nowrap"
+          data-tab="live-commerce"
+        >
+          라이브커머스
+        </button>
+        <button 
+          class="tab-btn px-8 py-4 text-lg font-bold text-neutral-500 hover:text-primary-600 border-b-4 border-transparent transition-all whitespace-nowrap"
+          data-tab="place-seo"
+        >
+          플레이스 상위노출
+        </button>
       </div>
-      <div class="mt-16">
-        <PricingTable serviceName={pricingData.utongstart.serviceName} packages={pricingData.utongstart.packages} />
-        <PricingTable serviceName={pricingData.liveCommerce.serviceName} packages={pricingData.liveCommerce.packages} />
-        <PricingTable serviceName={pricingData.placeSeo.serviceName} packages={pricingData.placeSeo.packages} />
+
+      <!-- 탭 내용 -->
+      <div class="tab-content" id="utongstart-content">
+        <PricingTable packages={pricingData.utongstart.packages} />
+      </div>
+      <div class="tab-content hidden" id="live-commerce-content">
+        <PricingTable packages={pricingData.liveCommerce.packages} />
+      </div>
+      <div class="tab-content hidden" id="place-seo-content">
+        <PricingTable packages={pricingData.placeSeo.packages} />
       </div>
     </div>
   </section>
+
+  <!-- 통합 패키지 강조 섹션 -->
+  <section class="py-16 md:py-24 bg-accent-100/50">
+    <div class="max-w-content mx-auto px-4 text-center">
+      <div class="max-w-3xl mx-auto bg-white p-10 rounded-[32px] shadow-xl border border-accent-200">
+        <span class="inline-block px-4 py-1.5 bg-accent-500 text-white text-xs font-black rounded-full mb-6 tracking-widest uppercase">
+          All-In-One Solution
+        </span>
+        <h2 class="text-display-sm text-primary-950">3개 서비스를 한 번에?<br/>전문가 전담 <span class="text-accent-500 underline decoration-accent-500/10 italic">올인원 패키지</span></h2>
+        <p class="mt-8 text-neutral-700 leading-relaxed">
+          유통 기획부터 라이브 방송, 플레이스 노출까지. 브랜드의 빠른 성장이 필요하신 분들을 위해 전문가 팀이 직접 전담하여 관리해 드립니다. 개별 서비스 합산 대비 20% 할인 혜택을 제공합니다.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/contact" class="w-full sm:w-auto bg-accent-500 hover:bg-accent-600 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg active:scale-95">
+            올인원 패키지 상담하기
+          </a>
+          <p class="text-sm font-bold text-neutral-600">별도 견적 문의 필요</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-content mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-section text-primary-950">요금 및 서비스 관련 FAQ</h2>
+      </div>
+      <FAQAccordion faqs={faqs} />
+    </div>
+  </section>
+
   <CTABanner />
 </BaseLayout>
+
+<script>
+  function setupTabs() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-tab');
+
+        // 버튼 활성화 상태 변경
+        tabs.forEach(t => {
+          t.classList.remove('active', 'text-primary-600', 'border-primary-600');
+          t.classList.add('text-neutral-500', 'border-transparent');
+        });
+        tab.classList.add('active', 'text-primary-600', 'border-primary-600');
+        tab.classList.remove('text-neutral-500', 'border-transparent');
+
+        // 내용 변경
+        contents.forEach(c => c.classList.add('hidden'));
+        document.getElementById(`${target}-content`)?.classList.remove('hidden');
+      });
+    });
+
+    // 초기 활성화 처리
+    const activeTab = document.querySelector('.tab-btn.active');
+    if (activeTab) {
+      activeTab.classList.add('text-primary-600', 'border-primary-600');
+      activeTab.classList.remove('text-neutral-500', 'border-transparent');
+    }
+  }
+
+  // 초기 실행
+  setupTabs();
+  
+  // Astro View Transitions 대응
+  document.addEventListener('astro:after-swap', setupTabs);
+</script>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .tab-btn.active {
+    border-color: #1E3A5F;
+  }
+</style>
