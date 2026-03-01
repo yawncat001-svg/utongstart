@@ -1,0 +1,63 @@
+---
+import { navItems } from '../../data/navigation';
+---
+
+<div id="mobile-menu" class="fixed inset-0 bg-primary-950 z-[60] flex flex-col items-center justify-center translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+  <button id="close-menu" class="absolute top-6 right-6 text-white hover:text-accent-400 transition-colors p-2" aria-label="메뉴 닫기">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+  </button>
+  
+  <ul class="flex flex-col items-center space-y-8 text-2xl font-semibold">
+    {navItems.map(item => (
+      <li>
+        <a href={item.href} class="text-white hover:text-accent-400 transition-colors">
+          {item.label}
+        </a>
+      </li>
+    ))}
+    <li class="pt-4">
+      <a href="/contact" class="bg-accent-500 hover:bg-accent-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg active:scale-95">
+        무료 상담 신청
+      </a>
+    </li>
+  </ul>
+  
+  <div class="mt-20 flex flex-col items-center gap-2 text-neutral-400">
+    <span class="text-sm">© 2026 유통스타트. All rights reserved.</span>
+  </div>
+</div>
+
+<script>
+  function setupMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const openButton = document.getElementById('open-menu');
+    const closeButton = document.getElementById('close-menu');
+    const menuLinks = mobileMenu?.querySelectorAll('a');
+
+    if (!mobileMenu || !openButton || !closeButton) return;
+
+    const toggleMenu = (isOpen: boolean) => {
+      if (isOpen) {
+        mobileMenu.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+      } else {
+        mobileMenu.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+      }
+    };
+
+    openButton.addEventListener('click', () => toggleMenu(true));
+    closeButton.addEventListener('click', () => toggleMenu(false));
+
+    // 메뉴 항목 클릭 시 메뉴 닫기 (동일 페이지 앵커 링크 대응)
+    menuLinks?.forEach(link => {
+      link.addEventListener('click', () => toggleMenu(false));
+    });
+  }
+
+  // 초기 실행
+  setupMobileMenu();
+
+  // Astro View Transitions 대응
+  document.addEventListener('astro:after-swap', setupMobileMenu);
+</script>

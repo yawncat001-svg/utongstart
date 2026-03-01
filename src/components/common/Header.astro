@@ -1,31 +1,41 @@
 ---
 import { navItems } from '../../data/navigation';
+import MobileNav from './MobileNav.astro';
 ---
-<header class="bg-primary-950 text-white sticky top-0 z-50">
-  <nav class="max-w-content mx-auto px-4 py-4 flex justify-between items-center">
-    <a href="/" class="flex items-center gap-2 group">
-      <div class="bg-accent-500 p-1.5 rounded-lg group-hover:bg-accent-400 transition-colors">
+<header class="bg-primary-950 text-white sticky top-0 z-50 shadow-md">
+  <nav class="max-w-content mx-auto px-4 py-3 flex justify-between items-center h-16">
+    <a href="/" class="flex items-center gap-2 group shrink-0">
+      <div class="bg-accent-500 p-1.5 rounded-lg group-hover:bg-accent-400 transition-all active:scale-95 duration-200">
         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
       </div>
-      <span class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-200">
+      <span class="text-xl md:text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-200 whitespace-nowrap">
         유통스타트
       </span>
     </a>
-    <ul class="hidden md:flex space-x-6">
-      {navItems.map(item => (
-        <li>
-          <a href={item.href} class="hover:text-accent-400 transition-colors">
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-    <a href="/contact" class="hidden md:inline-block bg-accent-500 hover:bg-accent-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-      무료 상담 신청
-    </a>
-    <button class="md:hidden">
-      <!-- 모바일 메뉴 아이콘 SVG가 필요합니다 -->
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-    </button>
+
+    <div class="flex items-center gap-4">
+      <ul class="hidden lg:flex items-center space-x-8">
+        {navItems.map(item => (
+          <li>
+            <a href={item.href} class="text-sm font-medium hover:text-accent-400 transition-colors">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      
+      <div class="h-6 w-px bg-white/10 hidden lg:block mx-2"></div>
+      
+      <a href="/contact" class="hidden md:inline-flex bg-accent-500 hover:bg-accent-600 active:scale-95 text-white text-sm font-bold py-2 px-5 rounded-lg transition-all shadow-sm">
+        무료 상담 신청
+      </a>
+      
+      <button id="open-menu" class="lg:hidden text-white hover:text-accent-400 transition-all p-2 rounded-lg hover:bg-white/5" aria-label="메뉴 열기">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </div>
   </nav>
 </header>
+
+<MobileNav />
+
