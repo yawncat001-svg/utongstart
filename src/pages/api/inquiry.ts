@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getDB, insertInquiry, type NewInquiry } from '../../lib/db/client';
 import { validateInquiry, sanitizeInput } from '../../lib/utils/validateForm';
 import { sendInquiryNotification } from '../../lib/email/sendNotification';
+import { saveToGoogleSheets } from '../../lib/utils/googleSheets';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
@@ -23,7 +24,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // 3. DB에 데이터 저장 (Cloudflare D1 환경인 경우에만)
+    // 3. DB에 데이터 저장
     const newInquiry: NewInquiry = {
       name: sanitizedData.name || '',
       company: sanitizedData.company || '',
@@ -43,32 +44,26 @@ export const POST: APIRoute = async ({ request, locals }) => {
       if (locals?.runtime?.env?.D1_DATABASE) {
         const db = getDB(locals.runtime.env);
         result = await insertInquiry(db, newInquiry);
-      } else {
-        console.warn('D1_DATABASE not found. Data only logged to console.');
-        console.log('Inquiry Record:', newInquiry);
       }
-    } catch (dbError) {
-      console.error('Database Error:', dbError);
-      // DB 저장이 실패해도 이메일 알림은 시도 (비즈니스 연속성)
+    } catch (error) {
+      console.error('DB Insert Error:', error);
     }
 
-    // 4. 관리자에게 이메일 알림 발송 및 구글 시트 저장
+    // 4. 후속 작업 (메일 발송, 구글 시트 저장)
     const env = locals?.runtime?.env || {};
 
-    // 이메일 발송 (비동기)
-    sendInquiryNotification(result, env).catch(console.error);
-
-    // 구글 시트 저장 (비동기)
-    import('../../lib/utils/googleSheets').then(({ saveToGoogleSheets }) => {
-      saveToGoogleSheets('inquiry', result, env).catch(console.error);
-    });
+    // 이메일과 구글 시트 저장을 동시에 실행하되, 완료를 기다려 네트워크 오류 방지
+    await Promise.allSettled([
+      sendInquiryNotification(result, env),
+      saveToGoogleSheets('inquiry', result, env)
+    ]);
 
     // 5. 성공 응답 반환
     return new Response(
       JSON.stringify({
         success: true,
         id: result.id,
-        message: '상담 신청이 성공적으로 접수되었습니다.'
+        message: '상담 신청이 완료되었습니다.'
       }),
       { status: 201, headers: { 'Content-Type': 'application/json' } }
     );
@@ -76,13 +71,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     console.error('API Error (inquiry):', error);
     return new Response(
-      JSON.stringify({ success: false, message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' }),
+      JSON.stringify({ success: false, message: '서버 오류가 발생했습니다.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 };
 
-// Astro 런타임에 D1 바인딩 타입 추가
+// Astro 런타임 타입 정의
 declare namespace App {
   interface Locals {
     runtime: {
@@ -90,6 +85,7 @@ declare namespace App {
         D1_DATABASE: D1Database;
         NOTIFICATION_EMAIL: string;
         RESEND_API_KEY: string;
+        GOOGLE_SHEET_API_URL: string;
       };
     };
   }
