@@ -1,7 +1,14 @@
-import type { APIRoute } from 'astro';
 export const prerender = false;
+import type { APIRoute } from 'astro';
 import { validateInquiry, sanitizeInput } from '../../lib/utils/validateForm';
 import { saveToGoogleSheets } from '../../lib/utils/googleSheets';
+
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({ status: 'active', message: 'Inquiry API is reachable via GET' }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+};
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {

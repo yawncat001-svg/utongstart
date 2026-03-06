@@ -25,7 +25,7 @@ export default function ConsultForm() {
     setIsSubmitting(true);
     // 실제 API 호출 로직은 여기에 구현합니다.
     try {
-      const response = await fetch('/api/inquiry', {
+      const response = await fetch('/api/submit-contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
