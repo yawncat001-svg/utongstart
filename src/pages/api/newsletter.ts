@@ -43,18 +43,26 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    // 4. 후속 작업 (환영 메일 발송, 구글 시트 저장)
-    // 인스턴스 종료 전 모든 비동기 작업의 완료를 기다림으로써 네트워크 연결 끊김 방지
-    await Promise.allSettled([
-      sendWelcomeEmail(email, name || undefined, env),
-      saveToGoogleSheets('newsletter', { email, name }, env)
-    ]);
+    // 4. 후속 작업 (구글 시트 저장 -> 환영 메일 발송 순서로 진행)
+    let statusMessage = '뉴스레터 구독이 완료되었습니다.';
+
+    // 1순위: 구글 시트 저장
+    const sheetResult = await saveToGoogleSheets('newsletter', { email, name }, env);
+    if (sheetResult) {
+      statusMessage += ' 서버에 저장완료하였습니다.';
+    }
+
+    // 2순위: 환영 이메일 발송
+    const emailResult = await sendWelcomeEmail(email, name || undefined, env);
+    if (emailResult) {
+      statusMessage += ` ${email}로 발송완료.`;
+    }
 
     // 5. 성공 응답 반환
     return new Response(
       JSON.stringify({
         success: true,
-        message: '뉴스레터 구독이 완료되었습니다.'
+        message: statusMessage
       }),
       { status: 201, headers: { 'Content-Type': 'application/json' } }
     );

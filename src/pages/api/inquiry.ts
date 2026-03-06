@@ -49,21 +49,31 @@ export const POST: APIRoute = async ({ request, locals }) => {
       console.error('DB Insert Error:', error);
     }
 
-    // 4. 후속 작업 (메일 발송, 구글 시트 저장)
-    const env = locals?.runtime?.env || {};
+    // 4. 후속 작업 (구글 시트 저장 -> 메일 발송 순서로 진행)
+    const env = (locals?.runtime?.env || {}) as any;
+    const toEmail = env.NOTIFICATION_EMAIL || 'utongstart@naver.com';
 
-    // 이메일과 구글 시트 저장을 동시에 실행하되, 완료를 기다려 네트워크 오류 방지
-    await Promise.allSettled([
-      sendInquiryNotification(result, env),
-      saveToGoogleSheets('inquiry', result, env)
-    ]);
+    // 결과 메시지 조립용 변수
+    let statusMessage = '상담 신청이 완료되었습니다.';
+
+    // 1순위: 구글 시트 저장
+    const sheetResult = await saveToGoogleSheets('inquiry', result, env);
+    if (sheetResult) {
+      statusMessage += ' 서버에 저장완료하였습니다.';
+    }
+
+    // 2순위: 이메일 알림 발송
+    const emailResult = await sendInquiryNotification(result, env);
+    if (emailResult) {
+      statusMessage += ` ${toEmail}로 이메일 발송완료.`;
+    }
 
     // 5. 성공 응답 반환
     return new Response(
       JSON.stringify({
         success: true,
         id: result.id,
-        message: '상담 신청이 완료되었습니다.'
+        message: statusMessage
       }),
       { status: 201, headers: { 'Content-Type': 'application/json' } }
     );
