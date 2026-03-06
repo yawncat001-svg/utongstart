@@ -30,8 +30,8 @@ export const steps = [
     "step": 4,
     "title": "폐쇄몰 입점",
     "subtitle": "안정적 B2B 거래처 확보",
-    "description": "상품 제안서 작성부터 복지몰·임직원몰 입점 협상까지, B2B 유통의 기본기를 체득합니다.",
-    "outcomes": ["상품 제안서 작성 역량", "B2B 유통 구조 이해", "안정적 거래처 확보 경험"],
+    "description": "다이렉트 상품 신청부터 복지몰.폐쇄몰 입점 공급까지 B2B유통의 기본기를 체득합니다.",
+    "outcomes": ["B2B 채널 확인 & 경험", "B2B 유통 구조 이해", "안정적 거래처 확보 경험"],
     "icon": "step-closed-mall.png",
     "duration": "2~4주"
   }
