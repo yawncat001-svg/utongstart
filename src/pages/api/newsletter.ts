@@ -17,8 +17,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // 2. 구글 시트 저장 - 백그라운드로 실행 (응답을 기다리지 않음)
-    const env = (locals?.runtime?.env || {}) as any;
-    const ctx = (locals?.runtime?.ctx) as any;
+    const runtime = (locals as any)?.runtime || {};
+    const env = runtime.env || {};
+    const ctx = runtime.ctx || {};
     const sheetPromise = saveToGoogleSheets('newsletter', { email, name }, env);
 
     if (ctx?.waitUntil) {

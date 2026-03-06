@@ -32,15 +32,24 @@ export default function ConsultForm() {
         },
         body: JSON.stringify(formData)
       });
-      const data = (await response.json()) as any;
-      if (response.ok) {
-        setIsSuccess(true);
+
+      // 서버 응답이 JSON이 아닐 경우(HTML 에러 페이지 등)를 대비한 처리
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json() as any;
+        if (response.ok) {
+          setIsSuccess(true);
+        } else {
+          alert(`서버 오류 (${response.status}): ${data.message || '상담 신청에 실패했습니다.'}`);
+        }
       } else {
-        alert(data.message || '상담 신청에 실패했습니다. 다시 시도해 주세요.');
+        const errorText = await response.text();
+        console.error('Non-JSON Response:', errorText);
+        alert(`네트워크 응답 오류 (${response.status}). 관리자에게 문의해 주세요.`);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      console.error('Client Error:', error);
+      alert('연결 오류가 발생했습니다. 인터넷 연결이나 서버 상태를 확인해주세요.');
     } finally {
       setIsSubmitting(false);
     }

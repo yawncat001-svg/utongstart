@@ -15,7 +15,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
             message: '서버 환경 변수 및 네트워크 리다이렉트 테스트 중입니다.'
         };
 
-        const env = (locals?.runtime?.env || {}) as any;
+        const env = ((locals as any)?.runtime?.env || {}) as any;
 
         // 환경 변수 마스킹 처리하여 로그에 출력
         const apiUrl = env.GOOGLE_SHEET_API_URL || 'NOT_CONFIGURED';
