@@ -52,8 +52,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
       console.log('Newsletter Subscription:', { email, name });
     }
 
-    // 4. 환영 이메일 발송
+    // 4. 환영 이메일 발송 및 구글 시트 저장
     sendWelcomeEmail(email, name || undefined, env).catch(console.error);
+
+    // 구글 시트 저장 (비동기)
+    import('../../lib/utils/googleSheets').then(({ saveToGoogleSheets }) => {
+      saveToGoogleSheets('newsletter', { email, name }, env).catch(console.error);
+    });
 
     // 5. 성공 응답 반환
     return new Response(

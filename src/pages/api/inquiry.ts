@@ -52,9 +52,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       // DB 저장이 실패해도 이메일 알림은 시도 (비즈니스 연속성)
     }
 
-    // 4. 관리자에게 이메일 알림 발송
+    // 4. 관리자에게 이메일 알림 발송 및 구글 시트 저장
     const env = locals?.runtime?.env || {};
+
+    // 이메일 발송 (비동기)
     sendInquiryNotification(result, env).catch(console.error);
+
+    // 구글 시트 저장 (비동기)
+    import('../../lib/utils/googleSheets').then(({ saveToGoogleSheets }) => {
+      saveToGoogleSheets('inquiry', result, env).catch(console.error);
+    });
 
     // 5. 성공 응답 반환
     return new Response(
