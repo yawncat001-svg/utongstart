@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getDB, insertNewsletterSubscriber, type NewNewsletterSubscriber } from '../../lib/db/client';
 import { validateEmail, sanitizeInput } from '../../lib/utils/validateForm';
-import { sendWelcomeEmail } from '../../lib/email/sendNotification';
 import { saveToGoogleSheets } from '../../lib/utils/googleSheets';
 import { eq } from 'drizzle-orm';
 import * as schema from '../../lib/db/schema';
@@ -20,8 +19,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // 2. 환경 확인
-    const env = locals?.runtime?.env || {};
+    // 2. 환경 및 DB 확인
+    const env = (locals?.runtime?.env || {}) as any;
     const db = env?.D1_DATABASE ? getDB(env) : null;
 
     if (db) {
@@ -43,26 +42,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    // 4. 후속 작업 (구글 시트 저장 -> 환영 메일 발송 순서로 진행)
-    let statusMessage = '뉴스레터 구독이 완료되었습니다.';
-
-    // 1순위: 구글 시트 저장
+    // 3. 구글 시트 저장 (메인 작업)
+    // 이메일 발송(sendWelcomeEmail)은 중지하고 구글 시트만 저장합니다.
     const sheetResult = await saveToGoogleSheets('newsletter', { email, name }, env);
-    if (sheetResult) {
-      statusMessage += ' 서버에 저장완료하였습니다.';
-    }
 
-    // 2순위: 환영 이메일 발송
-    const emailResult = await sendWelcomeEmail(email, name || undefined, env);
-    if (emailResult) {
-      statusMessage += ` ${email}로 발송완료.`;
-    }
-
-    // 5. 성공 응답 반환
+    // 4. 성공 응답 반환
     return new Response(
       JSON.stringify({
         success: true,
-        message: statusMessage
+        message: sheetResult ? '구독 신청 완료! 서버에 저장완료하였습니다.' : '구독 신청이 완료되었습니다.'
       }),
       { status: 201, headers: { 'Content-Type': 'application/json' } }
     );
@@ -70,7 +58,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     console.error('API Error (newsletter):', error);
     return new Response(
-      JSON.stringify({ success: false, message: '서버 오류가 발생했습니다.' }),
+      JSON.stringify({ success: false, message: '서버 오류가 발생했습니다. 다시 시도해 주세요.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
