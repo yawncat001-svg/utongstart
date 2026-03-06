@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { getDB, insertInquiry, type NewInquiry } from '../../lib/db/client';
 import { validateInquiry, sanitizeInput } from '../../lib/utils/validateForm';
 import { saveToGoogleSheets } from '../../lib/utils/googleSheets';
 
@@ -23,41 +22,34 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // 3. 데이터 객체 생성 (DB 저장용)
-    const newInquiry: NewInquiry = {
+    // 3. 데이터 정리
+    const inquiryData = {
+      id: Date.now(),
       name: sanitizedData.name || '',
       company: sanitizedData.company || '',
       phone: sanitizedData.phone || '',
-      email: sanitizedData.email || null,
+      email: sanitizedData.email || '',
       serviceType: sanitizedData.serviceType || '',
-      productCategory: sanitizedData.productCategory || null,
-      budgetRange: sanitizedData.budgetRange || null,
-      message: sanitizedData.message || null,
-      referralSource: sanitizedData.referralSource || null,
-      status: 'new',
+      message: sanitizedData.message || '',
+      timestamp: new Date().toISOString(),
     };
 
-    let result = { ...newInquiry, id: Date.now() } as any;
-
-    // 4. DB 저장 시도 (옵션)
-    try {
-      if (locals?.runtime?.env?.D1_DATABASE) {
-        const db = getDB(locals.runtime.env);
-        result = await insertInquiry(db, newInquiry).catch(() => result);
-      }
-    } catch (e) {
-      console.error('DB Error:', e);
-    }
-
-    // 5. 구글 시트 저장 (메인 작업)
+    // 4. 구글 시트 저장 - 응답을 기다리지 않고 백그라운드로 실행
+    // ctx.waitUntil이 있으면 사용, 없으면 그냥 fire-and-forget
     const env = (locals?.runtime?.env || {}) as any;
-    const sheetResult = await saveToGoogleSheets('inquiry', result, env);
+    const ctx = (locals?.runtime?.ctx) as any;
+    const sheetPromise = saveToGoogleSheets('inquiry', inquiryData, env);
 
-    // 6. 성공 응답 반환 (이메일 발송은 중지됨)
+    if (ctx?.waitUntil) {
+      ctx.waitUntil(sheetPromise);
+    }
+    // waitUntil 없어도 Promise는 계속 실행됨 (fire-and-forget)
+
+    // 5. 구글 시트 업로드를 기다리지 않고 즉시 성공 응답 반환
     return new Response(
       JSON.stringify({
         success: true,
-        message: sheetResult ? '상담 신청 완료! 서버에 저장완료하였습니다.' : '상담 신청이 완료되었습니다.'
+        message: '상담 신청이 완료되었습니다! 서버에 저장 중입니다.'
       }),
       { status: 201, headers: { 'Content-Type': 'application/json' } }
     );
@@ -65,7 +57,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     console.error('API Error (inquiry):', error);
     return new Response(
-      JSON.stringify({ success: false, message: '서버 오류가 발생했습니다. 다시 시도해 주세요.' }),
+      JSON.stringify({ success: false, message: '서버 오류가 발생했습니다.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
