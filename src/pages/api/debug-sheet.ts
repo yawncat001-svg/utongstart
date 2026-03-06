@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+export const prerender = false;
 import { saveToGoogleSheets } from '../../lib/utils/googleSheets';
 
 /**
