@@ -25,7 +25,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const { valid, errors } = validateInquiry(sanitizedData);
     if (!valid) {
       return new Response(
-        JSON.stringify({ success: false, errors }),
+        JSON.stringify({
+          success: false,
+          message: errors[0]?.message || '입력하신 정보를 다시 확인해 주세요.',
+          errors
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }

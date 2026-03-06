@@ -34,7 +34,8 @@ export function validateEmail(email: string) {
 }
 
 export function validatePhone(phone: string) {
-    const re = /^010-\d{3,4}-\d{4}$/;
+    // 하이픈이 있거나 없는 010 번호 형식을 모두 허용
+    const re = /^010-?\d{3,4}-?\d{4}$/;
     return re.test(phone);
 }
 
