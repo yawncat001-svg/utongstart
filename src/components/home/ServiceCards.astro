@@ -8,28 +8,28 @@ import { services } from '../../data/services';
       <h2 class="text-display-md text-primary-950 tracking-tighter">유통의 모든 과정을 <br/>하나의 <span class="text-accent-500 underline underline-offset-8 decoration-accent-500/20">시스템</span>으로 완성합니다</h2>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="flex justify-center">
       {services.map(service => (
         <a 
           href={service.href} 
-          class="pricing-card group p-10 rounded-[32px] bg-white border border-neutral-200 shadow-sm transition-all duration-500 hover:shadow-card-hover hover:border-transparent hover:-translate-y-3 flex flex-col items-start h-full"
+          class="pricing-card group p-10 md:p-14 rounded-[40px] bg-white border border-neutral-200 shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-transparent hover:-translate-y-3 flex flex-col items-center text-center max-w-3xl w-full"
         >
-          <div class="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center group-hover:bg-primary-950 transition-all duration-500 p-3 shadow-sm mb-10 overflow-hidden">
+          <div class="w-20 h-20 bg-primary-50 rounded-3xl flex items-center justify-center group-hover:bg-primary-950 transition-all duration-500 p-4 shadow-sm mb-10 overflow-hidden">
             <img 
               src={`/images/services/${service.icon}`} 
               alt={service.title} 
               class="w-full h-full object-contain group-hover:brightness-0 group-hover:invert transition-all duration-500" 
             />
           </div>
-          <h3 class="text-2xl font-black text-primary-950 tracking-tighter mb-4 group-hover:text-primary-600 transition-colors">
+          <h3 class="text-3xl md:text-4xl font-black text-primary-950 tracking-tighter mb-6 group-hover:text-primary-600 transition-colors">
             {service.title}
           </h3>
-          <p class="text-body-md text-neutral-600 leading-relaxed mb-8 flex-grow">
+          <p class="text-body-lg text-neutral-600 leading-relaxed mb-10 max-w-xl">
             {service.description}
           </p>
-          <div class="flex items-center gap-3 text-primary-600 font-bold group-hover:gap-5 transition-all">
+          <div class="flex items-center gap-3 text-primary-600 font-bold group-hover:gap-5 transition-all text-lg">
             자세히 보기
-            <svg class="w-5 h-5 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
           </div>

@@ -4,10 +4,6 @@ export const navItems = [
     "href": "/services/utongstart",
   },
   {
-    "label": "요금안내",
-    "href": "/pricing",
-  },
-  {
     "label": "진행사례",
     "href": "/cases",
   }
