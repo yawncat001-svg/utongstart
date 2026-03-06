@@ -1,5 +1,5 @@
-import type { APIRoute } from 'astro';
 export const prerender = false;
+import type { APIRoute } from 'astro';
 import { validateEmail, sanitizeInput } from '../../lib/utils/validateForm';
 import { saveToGoogleSheets } from '../../lib/utils/googleSheets';
 
