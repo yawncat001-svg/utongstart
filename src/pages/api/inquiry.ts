@@ -23,9 +23,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const db = getDB(locals.runtime.env);
-
-    // 3. DB에 데이터 저장
+    // 3. DB에 데이터 저장 (Cloudflare D1 환경인 경우에만)
     const newInquiry: NewInquiry = {
       name: sanitizedData.name || '',
       company: sanitizedData.company || '',
@@ -38,10 +36,25 @@ export const POST: APIRoute = async ({ request, locals }) => {
       referralSource: sanitizedData.referralSource || null,
       status: 'new',
     };
-    const result = await insertInquiry(db, newInquiry);
 
-    // 4. 관리자에게 이메일 알림 발송 (비동기로 처리하여 응답 지연 방지)
-    sendInquiryNotification(result, locals.runtime.env).catch(console.error);
+    let result = { ...newInquiry, id: Date.now() } as any;
+
+    try {
+      if (locals?.runtime?.env?.D1_DATABASE) {
+        const db = getDB(locals.runtime.env);
+        result = await insertInquiry(db, newInquiry);
+      } else {
+        console.warn('D1_DATABASE not found. Data only logged to console.');
+        console.log('Inquiry Record:', newInquiry);
+      }
+    } catch (dbError) {
+      console.error('Database Error:', dbError);
+      // DB 저장이 실패해도 이메일 알림은 시도 (비즈니스 연속성)
+    }
+
+    // 4. 관리자에게 이메일 알림 발송
+    const env = locals?.runtime?.env || {};
+    sendInquiryNotification(result, env).catch(console.error);
 
     // 5. 성공 응답 반환
     return new Response(
