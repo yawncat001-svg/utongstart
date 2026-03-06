@@ -21,7 +21,7 @@ export async function sendInquiryNotification(inquiry: Inquiry, env: any) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'notification@utongstart.co.kr',
+        from: 'onboarding@resend.dev', // 도메인 인증 전까지 사용 가능한 기본 발신 주소
         to: toEmail,
         subject: `[유통스타트] 신규 상담 신청: ${inquiry.company} (${inquiry.name}님)`,
         html: `
@@ -102,7 +102,7 @@ export async function sendWelcomeEmail(email: string, name: string | undefined, 
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'notification@utongstart.co.kr',
+        from: 'onboarding@resend.dev',
         to: email,
         subject: `[유통스타트] ${name ? name + '님, ' : ''}구독해주셔서 감사합니다!`,
         html: `

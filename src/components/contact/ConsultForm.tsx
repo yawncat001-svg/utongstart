@@ -32,14 +32,15 @@ export default function ConsultForm() {
         },
         body: JSON.stringify(formData)
       });
+      const data = (await response.json()) as any;
       if (response.ok) {
         setIsSuccess(true);
       } else {
-        alert('상담 신청에 실패했습니다. 다시 시도해 주세요.');
+        alert(data.message || '상담 신청에 실패했습니다. 다시 시도해 주세요.');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('상담 신청에 실패했습니다. 다시 시도해 주세요.');
+      alert('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     } finally {
       setIsSubmitting(false);
     }
