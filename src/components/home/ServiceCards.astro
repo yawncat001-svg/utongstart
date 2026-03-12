@@ -8,11 +8,11 @@ import { services } from '../../data/services';
       <h2 class="text-display-md text-primary-950 tracking-tighter">유통의 모든 과정을 <br/>하나의 <span class="text-accent-500 underline underline-offset-8 decoration-accent-500/20">시스템</span>으로 완성합니다</h2>
     </div>
     
-    <div class="flex justify-center">
+    <div class="flex flex-wrap justify-center gap-8">
       {services.map(service => (
         <a 
           href={service.href} 
-          class="pricing-card group p-10 md:p-14 rounded-[40px] bg-white border border-neutral-200 shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-transparent hover:-translate-y-3 flex flex-col items-center text-center max-w-3xl w-full"
+          class="pricing-card group p-8 md:p-14 rounded-[40px] bg-white border border-neutral-200 shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-transparent hover:-translate-y-3 flex flex-col items-center text-center max-w-3xl w-full"
         >
           <div class="w-20 h-20 bg-primary-50 rounded-3xl flex items-center justify-center group-hover:bg-primary-950 transition-all duration-500 p-4 shadow-sm mb-10 overflow-hidden">
             <img 

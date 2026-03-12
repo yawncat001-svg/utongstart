@@ -1,48 +1,71 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CaseCard from '../../components/cases/CaseCard.astro';
 import { seoData } from '../../data/seo';
 
-const allCases = await getCollection('cases');
-const sortedCases = allCases.sort((a, b) => {
-  return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
-});
+const caseImages = [
+  { src: '/images/cases/강릉은정한과.PNG', alt: '강릉은정한과' },
+  { src: '/images/cases/대만 송출 라이브 사례.png', alt: '대만 송출 라이브 사례' },
+  { src: '/images/cases/바움쿠헨_식품.png', alt: '바움쿠헨 식품' },
+  { src: '/images/cases/백아율.png', alt: '백아율' },
+  { src: '/images/cases/야다.png', alt: '야다' },
+  { src: '/images/cases/에브리해빗.png', alt: '에브리해빗' },
+  { src: '/images/cases/에비수.png', alt: '에비수' },
+  { src: '/images/cases/풀럽잇 (1).png', alt: '풀럽잇' },
+  { src: '/images/cases/풀럽잇.png', alt: '풀럽잇' },
+];
 
 const seo = seoData.cases;
-const categories = ['전체', '유통스타트'];
 ---
 
 <BaseLayout title={seo.title} description={seo.description}>
-  <section class="py-16 md:py-24 bg-primary-950 text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-tr from-primary-900 via-primary-950 to-primary-900 opacity-80"></div>
-    <div class="max-w-content mx-auto px-4 text-center relative z-10">
-      <span class="inline-block px-4 py-1.5 bg-accent-500 text-white text-xs font-black rounded-full mb-8 tracking-widest uppercase animate-fade-in-up">
-        Proven Results
-      </span>
-      <h1 class="text-display-md">결과로 증명하는 <br/><span class="text-accent-500 underline underline-offset-8 decoration-accent-500/20 italic">유통스타트의 진행사례</span></h1>
-      <p class="mt-8 text-body-lg text-primary-200 max-w-2xl mx-auto leading-relaxed">
-        어설픈 유통이 아닌, 실전 매출로 이어진 수많은 프로젝트들의 발자취를 확인하세요.
+  <section class="pt-24 pb-20 md:pt-32 md:pb-24 bg-primary-950 text-white relative overflow-hidden">
+    <!-- Background Elements to match Program page -->
+    <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 bg-gradient-to-tr from-primary-950 via-primary-900 to-primary-950 opacity-90"></div>
+      <img 
+        src="/images/cases-hero-bg.png" 
+        alt="Background" 
+        class="absolute inset-0 w-full h-full object-cover opacity-20 transition-opacity duration-1000"
+      />
+      <!-- Pulsing Glow Orb -->
+      <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-accent-500 rounded-full blur-[120px] opacity-20 animate-pulse"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 mb-8 bg-white/10 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-md animate-fade-in-up">
+        <span class="w-2 h-2 rounded-full bg-accent-500"></span>
+        <span class="text-xs font-bold text-primary-200 tracking-[0.2em] uppercase">Visual Portfolio</span>
+      </div>
+
+      <h1 class="text-3xl md:text-6xl font-black leading-tight tracking-tighter mb-8 animate-fade-in-up" style="animation-delay: 100ms;">
+        결과로 증명하는 <br/>
+        <span class="text-white">진행사례 갤러리</span>
+      </h1>
+
+      <p class="text-body-lg text-primary-100/80 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style="animation-delay: 200ms;">
+        유통스타트의 전략이 실전 매출로 이어진 <br class="hidden md:block"/> 생생한 현장과 성과를 화보 형태로 확인하세요.
       </p>
     </div>
   </section>
 
-  <section class="py-16 md:py-24 bg-white">
-    <div class="max-w-content mx-auto px-4">
-      <!-- Category Filter (UI Only) -->
-      <div class="flex flex-wrap gap-2 mb-16 overflow-x-auto no-scrollbar pb-4 border-b border-neutral-100 justify-center">
-        {categories.map((cat, idx) => (
-          <button 
-            class={`px-8 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap ${idx === 0 ? 'bg-primary-950 text-white shadow-xl' : 'bg-neutral-50 text-neutral-600 hover:bg-neutral-100'}`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {sortedCases.map(caseItem => (
-          <CaseCard caseItem={caseItem} />
+  <section class="py-12 md:py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <!-- Original Ratio Grid (Masonry style using columns) -->
+      <div class="columns-2 md:columns-3 gap-4 lg:gap-6 space-y-4 lg:space-y-6">
+        {caseImages.map((image) => (
+          <div class="break-inside-avoid overflow-hidden bg-neutral-100 group relative cursor-default rounded-xl border border-neutral-100 shadow-sm">
+            <img 
+              src={image.src} 
+              alt={image.alt} 
+              class="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+              <span class="text-white text-xs font-bold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                {image.alt}
+              </span>
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -50,8 +73,8 @@ const categories = ['전체', '유통스타트'];
 
   <section class="py-16 md:py-24 bg-primary-50">
     <div class="max-w-content mx-auto px-4 text-center">
-      <h2 class="text-display-sm text-primary-950">다음 주인공은 당신입니다</h2>
-      <p class="mt-6 text-neutral-600">성장 가능성 있는 좋은 제품을 가지고 계신가요? 유통스타트가 날개를 달아드립니다.</p>
+      <h2 class="text-display-sm text-primary-950">다음 성공의 주인공은 당신입니다</h2>
+      <p class="mt-6 text-neutral-600">당신의 제품도 유통스타트와 함께 특별한 가치를 만들어낼 수 있습니다.</p>
       <a href="/contact" class="mt-10 inline-block bg-primary-950 hover:bg-primary-900 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-xl active:scale-95">
         지금 바로 상담 시작하기
       </a>
@@ -60,11 +83,15 @@ const categories = ['전체', '유통스타트'];
 </BaseLayout>
 
 <style>
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
   }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>

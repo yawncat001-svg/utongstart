@@ -157,14 +157,14 @@ declare module 'astro:content' {
   slug: "distribution-strategy";
   body: string;
   collection: "blog";
-  data: any
+  data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
 "wadiz-checklist.mdx": {
 	id: "wadiz-checklist.mdx";
   slug: "wadiz-checklist";
   body: string;
   collection: "blog";
-  data: any
+  data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
 };
 "cases": Record<string, {
@@ -172,7 +172,7 @@ declare module 'astro:content' {
   slug: string;
   body: string;
   collection: "cases";
-  data: any;
+  data: InferEntrySchema<"cases">;
   render(): Render[".md"];
 }>;
 
@@ -184,5 +184,5 @@ declare module 'astro:content' {
 
 	type AnyEntryMap = ContentEntryMap & DataEntryMap;
 
-	export type ContentConfig = never;
+	export type ContentConfig = typeof import("./../../src/content/config.js");
 }

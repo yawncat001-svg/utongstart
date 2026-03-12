@@ -1,14 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
-import CaseCard from '../cases/CaseCard.astro';
-
-const featuredCases = await getCollection('cases', ({ data }) => {
-  return data.featured === true;
-});
-
-const latestCases = featuredCases.length > 0 
-  ? featuredCases.slice(0, 3) 
-  : (await getCollection('cases')).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()).slice(0, 3);
+const previewImages = [
+  { src: '/images/cases/강릉은정한과.PNG', alt: '강릉은정한과' },
+  { src: '/images/cases/바움쿠헨_식품.png', alt: '바움쿠헨 식품' },
+  { src: '/images/cases/야다.png', alt: '야다' },
+];
 ---
 
 <section class="py-16 md:py-24 bg-white">
@@ -20,15 +15,22 @@ const latestCases = featuredCases.length > 0
       </p>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {latestCases.map(caseItem => (
-        <CaseCard caseItem={caseItem} />
+    <div class="columns-2 md:columns-3 gap-4 space-y-4">
+      {previewImages.map(image => (
+        <div class="break-inside-avoid overflow-hidden bg-neutral-100 group relative rounded-xl border border-neutral-100 shadow-sm">
+          <img 
+            src={image.src} 
+            alt={image.alt} 
+            class="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
       ))}
     </div>
 
     <div class="mt-16 text-center">
       <a href="/cases" class="inline-flex items-center gap-2 group text-primary-600 font-bold hover:text-accent-500 transition-all">
-        전체 진행사례 확인하기 
+        전체 진행사례 화보 보기 
         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
         </svg>
